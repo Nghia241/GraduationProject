@@ -1,0 +1,53 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-3 bg-light p-3">
+      <h5 class="text-danger">Quản lý sự kiện theo công ty</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link text-primary" href="#">Quản lý sự kiện</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-primary" href="#">Tài khoản</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-primary" href="#">Quản lý thẩm quyền</a>
+        </li>
+        <li class="nav-item mt-5">
+          <%= link_to 'Đăng xuất', destroy_user_session_path, method: :delete, class: 'btn btn-danger' %>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-9">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5>Danh sách sự kiện</h5>
+        <a class="btn btn-primary" href="/events/new">Tạo mới</a>
+      </div>
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên sự kiện</th>
+          <th>Địa chỉ</th>
+          <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @events.each_with_index do |event, index| %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= event.name %></td>
+            <td><%= event.location %></td>
+            <td>
+              <a href="/events/<%= event.id %>" class="btn btn-secondary">Chi tiết</a>
+              <a href="/events/<%= event.id %>/delete" class="btn btn-danger">Xóa</a>
+              <a href="/tickets/new?event_id=<%= event.id %>" class="btn btn-success">Thêm NV</a>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+

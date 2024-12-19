@@ -2,20 +2,34 @@
 <html>
 <head>
   <title>Hệ thống quản lý nội bộ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <!-- Bootstrap CSS từ CDN -->
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
 </head>
 <body>
-<%= yield %>
+<% if user_signed_in? %>
+  <!-- Hiển thị giao diện chính khi đã đăng nhập -->
+  <header>
+    <%= render 'partials/navbar' %>
+  </header>
+  <div class="container-fluid">
+    <div class="row">
+      <aside class="col-md-2 bg-light vh-100">
+        <%= render 'partials/sidebar' %>
+      </aside>
+      <main class="col-md-10 p-4">
+        <%= yield %>
+      </main>
+    </div>
+  </div>
+<% else %>
+  <!-- Hiển thị giao diện login khi chưa đăng nhập -->
+  <%= yield %>
+<% end %>
 
-<!-- Gọi file JavaScript chính của ứng dụng -->
-<%= javascript_include_tag 'application', 'data-turbo-track': 'reload' %>
-
-<!-- jQuery và Bootstrap JavaScript từ CDN -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

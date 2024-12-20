@@ -30,8 +30,9 @@ class User::SessionsController < Devise::SessionsController
   protected
 
   def after_sign_in_path_for(resource)
-    # Chuyển hướng đến trang dashboard hoặc trang chính (mặc định: home_index_path)
-    stored_location_for(resource) || home_index_path
+    if resource.system_role_id == 'super_admin'
+      stored_location_for(resource) || home_index_path
+    end
   end
 
   # Ghi đè phương thức after_sign_out_path_for để chuyển hướng sau đăng xuất

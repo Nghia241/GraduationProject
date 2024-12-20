@@ -33,17 +33,17 @@ puts "Seeded Languages successfully!"
 
 # Seed data for users
 users = [
-  { name: 'Super Admin', email: 'superadmin@example.com', encrypted_password: 'password', system_role_id: 1, language_id: 1 },
-  { name: 'Admin', email: 'admin@example.com', encrypted_password: 'password', system_role_id: 2, language_id: 1 },
-  { name: 'User', email: 'user@example.com', encrypted_password: 'password', system_role_id: 3, language_id: 2 }
+  { name: 'Super Admin', email: 'superadmin@example.com', password: 'password', system_role_id: 1, language_id: 1 },
+  { name: 'Admin', email: 'admin@example.com', password: 'password', system_role_id: 2, language_id: 1 },
+  { name: 'User', email: 'user@example.com', password: 'password', system_role_id: 3, language_id: 2 }
 ]
 
 users.each do |user|
-  User.find_or_create_by(email: user[:email]) do |u|
+  User.find_or_create_by!(email: user[:email]) do |u|
     u.name = user[:name]
     u.system_role_id = user[:system_role_id]
     u.language_id = user[:language_id]
-    u.encrypted_password = user[:encrypted_password]
+    u.password = user[:password]
     u.created_at = Time.now
     u.updated_at = Time.now
   end

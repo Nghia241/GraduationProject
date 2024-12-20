@@ -29,7 +29,7 @@ gem 'jquery-rails'          # Chỉ giữ lại nếu thực sự cần
 
 # Web server
 gem "puma", "~> 5.0"
-
+gem 'kaminari'
 # Hotwire (Turbo và Stimulus)
 gem "importmap-rails"
 gem "turbo-rails"

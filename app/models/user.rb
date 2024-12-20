@@ -23,6 +23,7 @@ class User < ApplicationRecord
   validates :qr_code, content_type: ['image/png', 'image/jpg', 'image/jpeg'], size: { less_than: 5.megabytes }
 
   # Custom methods (if needed)
+  enum system_role_id: { super_admin: 1, admin: 2, user: 3 }
   def full_role_name
     system_role ? system_role.role_name : "No Role"
   end

@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   get 'home/index', to: 'home#index', as: :home_index
 
   # Routes cho sự kiện (Event)
-  resources :events do
+  resources :event do
     member do
       get :delete # Thao tác xóa sự kiện
     end

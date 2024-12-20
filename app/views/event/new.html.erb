@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <h5>Chi tiết sự kiện</h5>
+  <%= form_with model: @event, url: event_index_path, local: true do |f| %>
+    <div class="row">
+      <!-- Cột hình ảnh -->
+      <div class="col-md-3">
+        <%= f.label :image, "Hình ảnh sự kiện (PNG)" %>
+        <%= f.file_field :image, class: "form-control mb-3" %>
+        <%# if @event.image.attached? %>
+<!--          <img src="<%#= url_for(@event.image) %>" class="img-fluid" alt="Hình ảnh sự kiện">-->
+        <%# end %>
+      </div>
+
+      <!-- Cột thông tin -->
+      <div class="col-md-9">
+        <div class="form-group">
+          <%= f.label :name, "Tên sự kiện *" %>
+          <%= f.text_field :name, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :start_time, "Bắt đầu" %>
+          <%= f.datetime_select :start_time, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :end_time, "Kết thúc" %>
+          <%= f.datetime_select :end_time, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :location, "Địa chỉ" %>
+          <%= f.text_field :location, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :description, "Mô tả sự kiện" %>
+          <%= f.text_area :description, class: "form-control", rows: 5 %>
+        </div>
+
+        <div class="form-group mt-3">
+          <%= f.submit "Xác nhận", class: "btn btn-primary" %>
+          <%= link_to "QR Code", event_index_path, class: "btn btn-secondary" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

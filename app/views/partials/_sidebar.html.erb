@@ -1,7 +1,10 @@
 <div class="d-flex flex-column p-3">
   <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item <%= active_class('/home') %>">
+      <%= link_to "Tổng quan", home_index_path, class: "nav-link #{active_class(home_index_path)}" %>
+    </li>
     <li class="nav-item">
-      <%= link_to "Quản lý sự kiện", '', class: "nav-link active" %>
+      <%= link_to "Quản lý sự kiện", event_index_path, class: "nav-link #{active_class(event_index_path)}" %>
     </li>
     <li>
       <%= link_to "Tài khoản", '', class: "nav-link" %>
@@ -10,7 +13,7 @@
       <%= link_to "Quản lý thẩm quyền", '', class: "nav-link" %>
     </li>
     <li>
-      <%= link_to "Đăng xuất", '', method: :delete, class: "nav-link text-danger" %>
+      <%= link_to 'Đăng xuất', destroy_user_session_path, method: :delete, class: 'nav-link text-danger' %>
     </li>
   </ul>
 </div>

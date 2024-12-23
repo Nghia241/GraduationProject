@@ -1,0 +1,62 @@
+<div class="container mt-5">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h3 class="card-title text-center">Chi tiết sự kiện và Chỉnh sửa</h3>
+    </div>
+    <div class="card-body">
+      <!-- Hiển thị ảnh sự kiện -->
+      <div class="text-center mb-4">
+        <%= image_tag @event.image.attached? ? url_for(@event.image) : "https://skala.or.id/wp-content/uploads/2024/01/dummy-post-square-1-1.jpg",
+                      class: "img-fluid rounded",
+                      style: "max-width: 600px; max-height: 300px;",
+                      alt: @event.name || "Event Image" %>
+      </div>
+
+      <!-- Biểu mẫu chỉnh sửa sự kiện -->
+      <%= form_with model: @event, url: event_path(@event), method: :patch, local: true do |f| %>
+        <!-- Tên sự kiện -->
+        <div class="mb-3">
+          <%= f.label :name, "Tên sự kiện", class: "form-label text-primary" %>
+          <%= f.text_field :name, class: "form-control" %>
+        </div>
+
+        <!-- Địa điểm -->
+        <div class="mb-3">
+          <%= f.label :location, "Địa điểm", class: "form-label text-primary" %>
+          <%= f.text_field :location, class: "form-control" %>
+        </div>
+
+        <!-- Thời gian bắt đầu -->
+        <div class="mb-3">
+          <%= f.label :start_time, "Thời gian bắt đầu", class: "form-label text-primary" %>
+          <%= f.datetime_select :start_time, class: "form-control" %>
+        </div>
+
+        <!-- Thời gian kết thúc -->
+        <div class="mb-3">
+          <%= f.label :end_time, "Thời gian kết thúc", class: "form-label text-primary" %>
+          <%= f.datetime_select :end_time, class: "form-control" %>
+        </div>
+
+        <!-- Ảnh sự kiện -->
+        <div class="mb-3">
+          <%= f.label :image, "Hình ảnh sự kiện", class: "form-label text-primary" %>
+          <%= f.file_field :image, class: "form-control" %>
+        </div>
+
+        <!-- Nút cập nhật -->
+        <div class="text-center">
+          <%= f.submit "Cập nhật sự kiện", class: "btn btn-success" %>
+        </div>
+      <% end %>
+
+      <!-- Nút quay lại -->
+      <div class="d-flex justify-content-between mt-4">
+        <%= link_to "Quay lại danh sách sự kiện", event_index_path, class: "btn btn-secondary" %>
+        <%= link_to "Xem QR Code", qrcode_event_path(@event), class: "btn btn-primary" %>
+        <%= link_to "Xóa sự kiện", event_path(@event), method: :delete, data: { confirm: "Bạn có chắc chắn muốn xóa sự kiện này?" }, class: "btn btn-danger" %>
+        <%= link_to "Quét QR Code", scan_qr_event_path(@event), class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -34,7 +34,7 @@ gem 'kaminari'
 gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
-
+gem 'aws-sdk-s3', require: false
 # Debugging và công cụ hỗ trợ
 gem "pry"
 gem "rqrcode"

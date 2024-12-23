@@ -23,6 +23,10 @@ Rails.application.routes.draw do
   resources :event do
     member do
       get :delete # Thao tác xóa sự kiện
+      get :qrcode
+      get :scan_qr # Màn hình quét QR
+      post :decode
+      post :test
     end
   end
 

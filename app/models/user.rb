@@ -3,10 +3,6 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  # Devise modules for authentication
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
-
   # Associations
   belongs_to :system_role, optional: true
   belongs_to :language, optional: true

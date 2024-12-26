@@ -19,6 +19,13 @@ Rails.application.routes.draw do
   # Trang HomePage sau khi đăng nhập
   get 'home/index', to: 'home#index', as: :home_index
 
+  resource :profile, only: [:show, :update] do
+    member do
+      get :edit_password     # Màn hình đổi mật khẩu
+      patch :update_password # Xử lý cập nhật mật khẩu
+    end
+  end
+
   # Routes cho sự kiện (Event)
   resources :event do
     member do

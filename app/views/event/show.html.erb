@@ -56,6 +56,7 @@
         <%= link_to "Xem QR Code", qrcode_event_path(@event), class: "btn btn-primary" %>
         <%= link_to "Xóa sự kiện", event_path(@event), method: :delete, data: { confirm: "Bạn có chắc chắn muốn xóa sự kiện này?" }, class: "btn btn-danger" %>
         <%= link_to "Quét QR Code", scan_qr_event_path(@event), class: "btn btn-primary" %>
+        <%= link_to "Danh sách nhân viên", employees_list_event_path(@event), class: "btn btn-primary" %>
       </div>
     </div>
   </div>

@@ -26,7 +26,7 @@ gem 'active_storage_validations'
 gem 'dotenv-rails', groups: [:development, :test]
 
 gem 'jquery-rails'          # Chỉ giữ lại nếu thực sự cần
-
+gem 'ransack'
 # Web server
 gem "puma", "~> 5.0"
 gem 'kaminari'

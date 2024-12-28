@@ -60,6 +60,60 @@ class EventController < ApplicationController
     @event = Event.find(params[:id])
   end
 
+  def employees_list
+    @event = Event.find(params[:id])
+
+    # Lấy danh sách tất cả nhân viên ngoại trừ bản thân
+    @q = User.ransack(params[:q])
+    @employees = @q.result(distinct: true).where.not(id: current_user.id).map do |user|
+      {
+        id: user.id,
+        name: user.name,
+        has_ticket: Ticket.exists?(event_id: @event.id, user_id: user.id)
+      }
+    end
+
+    # Lọc theo trạng thái tham gia sự kiện
+    if params[:status] == 'participated'
+      @employees.select! { |employee| employee[:has_ticket] }
+    elsif params[:status] == 'not_participated'
+      @employees.select! { |employee| !employee[:has_ticket] }
+    end
+
+    # Phân trang
+    @paginated_employees = Kaminari.paginate_array(@employees).page(params[:page]).per(10)
+  end
+
+  def add_employee_to_event
+    event = Event.find(params[:id])
+    user = User.find(params[:user_id])
+
+    raw_data = {
+      event_id: event.id,
+      user_id: user.id
+    }.to_json
+
+    # Mã hóa dữ liệu bằng Base64
+    encoded_data = Base64.strict_encode64(raw_data)
+    ticket = Ticket.create!(event: event, user: user, qr_code_value: encoded_data)
+
+    if ticket.save
+      render json: { message: "Nhân viên đã được thêm vào sự kiện thành công!" }, status: :ok
+    else
+      render json: { message: "Không thể thêm nhân viên vào sự kiện." }, status: :unprocessable_entity
+    end
+  end
+
+  def remove_employee_from_event
+    ticket = Ticket.find_by(event_id: params[:id], user_id: params[:user_id])
+
+    if ticket&.destroy
+      render json: { message: "Nhân viên đã được xóa khỏi sự kiện thành công!" }, status: :ok
+    else
+      render json: { message: "Không thể xóa nhân viên khỏi sự kiện." }, status: :unprocessable_entity
+    end
+  end
+
   # def decode_qrcode
   #   binding.pry
   #   # Giải mã Base64

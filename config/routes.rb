@@ -19,6 +19,15 @@ Rails.application.routes.draw do
   # Trang HomePage sau khi đăng nhập
   get 'home/index', to: 'home#index', as: :home_index
 
+  resources :users, only: [:index] do
+    collection do
+      get :role_manager
+    end
+    member do
+      post :update_role
+    end
+  end
+
   resource :profile, only: [:show, :update] do
     member do
       get :edit_password     # Màn hình đổi mật khẩu
@@ -29,6 +38,9 @@ Rails.application.routes.draw do
   # Routes cho sự kiện (Event)
   resources :event do
     member do
+      get :employees_list
+      post :add_employee_to_event
+      delete :remove_employee_from_event
       get :delete # Thao tác xóa sự kiện
       get :qrcode
       get :scan_qr # Màn hình quét QR

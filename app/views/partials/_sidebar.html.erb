@@ -10,7 +10,7 @@
       <%= link_to "Tài khoản", profile_path, class: "nav-link #{active_class(profile_path)}" %>
     </li>
     <li>
-      <%= link_to "Quản lý thẩm quyền", '', class: "nav-link" %>
+      <%= link_to "Quản lý thẩm quyền", role_manager_users_path, class: "nav-link #{active_class(role_manager_users_path)}" %>
     </li>
     <li>
       <%= link_to 'Đăng xuất', destroy_user_session_path, method: :delete, class: 'nav-link text-danger' %>

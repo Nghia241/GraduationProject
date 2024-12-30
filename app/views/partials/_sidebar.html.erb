@@ -1,14 +1,14 @@
 <div class="d-flex flex-column p-3">
   <ul class="nav nav-pills flex-column mb-auto">
-    <li class="nav-item <%= active_class('/home') %>">
-      <%= link_to "Tổng quan", home_index_path, class: "nav-link #{active_class(home_index_path)}" %>
-    </li>
     <% if current_user.system_role_id == 1 %>
+      <li class="nav-item <%= active_class('/home') %>">
+        <%= link_to "Tổng quan", home_index_path, class: "nav-link #{active_class(home_index_path)}" %>
+      </li>
       <li class="nav-item">
         <%= link_to "Quản lý sự kiện", event_index_path, class: "nav-link #{active_class(event_index_path)}" %>
       </li>
     <% end %>
-    <% if current_user.system_role_id == 3 || current_user.system_role_id == 2%>
+    <% if current_user.system_role_id == 3 || current_user.system_role_id == 2 %>
       <li class="nav-item">
         <%= link_to "Quản lý sự kiện cá nhân", event_details_event_index_path, class: "nav-link #{active_class(event_details_event_index_path)}" %>
       </li>

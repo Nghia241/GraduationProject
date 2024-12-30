@@ -30,8 +30,10 @@ class User::SessionsController < Devise::SessionsController
   protected
 
   def after_sign_in_path_for(resource)
-    if resource.system_role_id == 'super_admin'
+    if resource.system_role_id == 1
       stored_location_for(resource) || home_index_path
+    elsif resource.system_role_id == 3
+      stored_location_for(resource) || profile_path
     end
   end
 

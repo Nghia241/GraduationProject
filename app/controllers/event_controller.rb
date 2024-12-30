@@ -114,19 +114,32 @@ class EventController < ApplicationController
     end
   end
 
-  # def decode_qrcode
-  #   binding.pry
-  #   # Giải mã Base64
-  #   decoded_data = Base64.decode64(encoded_data)
-  #
-  #   # Parse JSON để lấy thông tin
-  #   parsed_data = JSON.parse(decoded_data)
-  #   event_id = parsed_data["event_id"]
-  #   user_id = parsed_data["user_id"]
-  #
-  #   { event_id: event_id, user_id: user_id }
-  #   binding.pry
-  # end
+  def event_details
+    @events = current_user.events.page(params[:page]).per(2)
+  end
+
+  def change_employee_role
+    event = Event.find(params[:id])
+    ticket = Ticket.find_by(event_id: event.id, user_id: params[:user_id])
+
+    if ticket.update(event_role: params[:role])
+      render json: { message: "Cập nhật vai trò thành công!" }, status: :ok
+    else
+      render json: { message: "Không thể cập nhật vai trò." }, status: :unprocessable_entity
+    end
+  end
+
+  def change_role
+    ticket = Ticket.find_by(event_id: params[:id], user_id: params[:user_id])
+
+    if ticket
+      ticket.update(event_role: params[:role])
+      render json: { message: "Cập nhật vai trò thành công!" }, status: :ok
+    else
+      render json: { message: "Không tìm thấy nhân viên trong sự kiện!" }, status: :not_found
+    end
+  end
+
   def decode
     encoded_data = params[:qr_data].to_s
     event_id = params[:event_id]

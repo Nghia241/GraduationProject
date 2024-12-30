@@ -14,7 +14,7 @@ class HomeController < ApplicationController
   private
 
   def authorize_super_admin
-    unless current_user.system_role_id == 1
+    unless current_user.system_role_id == 1 || current_user.system_role_id == 2
       flash[:alert] = "Bạn không có quyền truy cập vào trang này."
       redirect_to root_path # Hoặc trang khác mà bạn muốn chuyển hướng
     end

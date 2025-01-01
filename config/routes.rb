@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   # Trang HomePage sau khi đăng nhập
   get 'home/index', to: 'home#index', as: :home_index
 
-  resources :users, only: [:index] do
+  resources :users, only: [:index, :destroy] do
     collection do
       get :role_manager
     end

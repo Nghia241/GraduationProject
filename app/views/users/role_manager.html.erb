@@ -56,14 +56,18 @@
 
         // Xử lý nút xóa người dùng (bổ sung nếu cần)
         $(document).on("click", ".delete-user", function () {
-            const userId = $(this).closest("tr").data("user-id");
+            const row = $(this).closest("tr"); // Lấy dòng chứa nút được nhấn
+            const userId = row.data("user-id");
+
             if (confirm("Bạn có chắc chắn muốn xóa người dùng này không?")) {
                 $.ajax({
                     url: `/users/${userId}`,
                     method: "DELETE",
                     success: function (response) {
-                        alert(response.message);
-                        location.reload(); // Tải lại bảng sau khi xóa
+                        alert(response.message); // Hiển thị thông báo thành công
+                        row.fadeOut(300, function () {
+                            $(this).remove(); // Loại bỏ dòng sau khi hiệu ứng mờ hoàn tất
+                        });
                     },
                     error: function (xhr) {
                         alert("Không thể xóa người dùng. Vui lòng thử lại.");

@@ -34,7 +34,7 @@ class EventController < ApplicationController
     end
   end
 
-  def delete
+  def destroy
     @event = Event.find(params[:id])
     @event.destroy
     redirect_to root_path, notice: "Sự kiện đã được xóa."

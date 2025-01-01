@@ -23,6 +23,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+    render json: { message: "Xóa người dùng thành công!" }, status: :ok
+  end
+
   private
 
   # Đảm bảo chỉ admin hoặc super admin được truy cập

@@ -4,15 +4,55 @@
       <h3 class="text-center">QR Code cho sự kiện</h3>
     </div>
     <div class="card-body text-center">
-      <% if @qrcode %>
-        <%= raw @qrcode.as_svg(module_size: 6, standalone: true, use_path: true) %>
+      <% if @checked_in %>
+        <div class="alert alert-success text-center">
+          <h1>✔</h1>
+          <p>Vé đã được quét</p>
+        </div>
+      <% elsif @qrcode %>
+        <div class="qr-code">
+          <%= raw @qrcode.as_svg(module_size: 6, standalone: true, use_path: true) %>
+        </div>
       <% else %>
         <p class="text-danger">Không thể tạo QR Code.</p>
       <% end %>
-      <p class="mt-3">
-<!--        Đây là QR Code của sự kiện với ID: <strong><%#= @event.id %></strong>.-->
-      </p>
       <%= link_to "Quay lại chi tiết sự kiện", event_path(@event), class: "btn btn-secondary mt-3" %>
+      <div id="check-in-status" class="mt-4">
+        <% unless @checked_in %>
+          <p class="text-info">Đang kiểm tra trạng thái...</p>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        const checkInStatus = $(".qr-code");
+        const eventId = <%= @event.id %>;
+        const statusChecker = $("#check-in-status");
+        function checkStatus() {
+            $.ajax({
+                url: `/event/${eventId}/check_in_status`,
+                method: "GET",
+                success: function (data) {
+                    if (data.checked_in) {
+                        checkInStatus.html(`
+              <div class="alert alert-success text-center">
+                <h1>✔</h1>
+                <p>Vé đã được xác nhận!</p>
+              </div>
+            `);
+                        statusChecker.empty()
+                        clearInterval(intervalId); // Dừng polling sau khi đã check-in
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Lỗi khi kiểm tra trạng thái:", error);
+                },
+            });
+        }
+
+        const intervalId = setInterval(checkStatus, 1000); // Thăm dò mỗi 5 giây
+    });
+</script>

@@ -5,7 +5,7 @@ class EventController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @events = Event.page(params[:page]).per(2)
+    @events = Event.page(params[:page]).per(6)
   end
 
   def new
@@ -42,18 +42,34 @@ class EventController < ApplicationController
 
   def qrcode
     @event = Event.find(params[:id])
+    ticket = @event.tickets.find_by(user_id: current_user.id)
 
-    # Dữ liệu kết hợp: event ID và user ID
-    raw_data = {
-      event_id: @event.id,
-      user_id: current_user.id
-    }.to_json
+    # Nếu vé đã check-in, không cần tạo QR Code
+    if ticket.checked_in
+      @checked_in = true
+    else
+      # Dữ liệu kết hợp: event ID và user ID
+      raw_data = {
+        event_id: @event.id,
+        user_id: current_user.id
+      }.to_json
 
-    # Mã hóa dữ liệu bằng Base64
-    encoded_data = Base64.strict_encode64(raw_data)
+      # Mã hóa dữ liệu bằng Base64
+      encoded_data = Base64.strict_encode64(raw_data)
 
-    # Tạo QR Code từ dữ liệu đã mã hóa
-    @qrcode = RQRCode::QRCode.new(encoded_data)
+      # Tạo QR Code từ dữ liệu đã mã hóa
+      @qrcode = RQRCode::QRCode.new(encoded_data)
+    end
+  end
+
+  def check_in_status
+    @event = Event.find(params[:id])
+    ticket = @event.tickets.find_by(user_id: current_user.id)
+    if ticket.checked_in
+      render json: { checked_in: true }
+    else
+      render json: { checked_in: false }
+    end
   end
 
   def scan_qr
@@ -115,7 +131,7 @@ class EventController < ApplicationController
   end
 
   def event_details
-    @events = current_user.events.page(params[:page]).per(2)
+    @events = current_user.events.page(params[:page]).per(6)
   end
 
   def change_employee_role

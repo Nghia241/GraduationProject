@@ -50,7 +50,7 @@ Rails.application.routes.draw do
       post :decode
       patch :change_employee_role
       post :change_role
-      post :test
+      get :check_in_status
     end
   end
 

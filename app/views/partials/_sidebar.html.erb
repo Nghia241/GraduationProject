@@ -1,28 +1,28 @@
-<div class="d-flex flex-column p-3">
+<div class="d-flex flex-column p-3 vh-100 d-none d-md-block" id="desktopSidebar" style="background-color: grey">
   <ul class="nav nav-pills flex-column mb-auto">
     <% if current_user.system_role_id == 1 %>
       <li class="nav-item <%= active_class('/home') %>">
-        <%= link_to "Tổng quan", home_index_path, class: "nav-link #{active_class(home_index_path)}" %>
+        <%= link_to "Tổng quan", home_index_path, class: "nav-link #{active_class(home_index_path)} text-white" %>
       </li>
       <li class="nav-item">
-        <%= link_to "Quản lý sự kiện", event_index_path, class: "nav-link #{active_class(event_index_path)}" %>
+        <%= link_to "Quản lý sự kiện", event_index_path, class: "nav-link #{active_class(event_index_path)} text-white" %>
       </li>
     <% end %>
     <% if current_user.system_role_id == 3 || current_user.system_role_id == 2 %>
       <li class="nav-item">
-        <%= link_to "Quản lý sự kiện cá nhân", event_details_event_index_path, class: "nav-link #{active_class(event_details_event_index_path)}" %>
+        <%= link_to "Quản lý sự kiện cá nhân", event_details_event_index_path, class: "nav-link #{active_class(event_details_event_index_path)} text-white" %>
       </li>
     <% end %>
     <li>
-      <%= link_to "Tài khoản", profile_path, class: "nav-link #{active_class(profile_path)}" %>
+      <%= link_to "Tài khoản", profile_path, class: "nav-link #{active_class(profile_path)} text-white" %>
     </li>
     <% if current_user.system_role_id == 1 %>
       <li>
-        <%= link_to "Quản lý thẩm quyền", role_manager_users_path, class: "nav-link #{active_class(role_manager_users_path)}" %>
+        <%= link_to "Quản lý thẩm quyền", role_manager_users_path, class: "nav-link #{active_class(role_manager_users_path)} text-white" %>
       </li>
     <% end %>
     <li>
-      <%= link_to 'Đăng xuất', destroy_user_session_path, method: :delete, class: 'nav-link text-danger' %>
+      <%= link_to 'Đăng xuất', destroy_user_session_path, method: :delete, class: 'nav-link text-warning' %>
     </li>
   </ul>
 </div>

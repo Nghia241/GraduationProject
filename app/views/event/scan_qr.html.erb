@@ -11,47 +11,31 @@
   </div>
 </div>
 
-<!-- Thêm âm thanh -->
-<audio id="success-sound" src="success.mp3" preload="auto"></audio>
-<audio id="error-sound" src="error.mp3" preload="auto"></audio>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js"></script>
 <script>
     $(document).ready(function () {
         // Hàm hiển thị thông báo
         function showAlert(message, type) {
             const alertHtml = `
-        <div class="alert alert-${type} text-center fs-4" role="alert">
+        <div class="alert alert-${type} text-center fs-3 fw-bold" role="alert">
           ${message}
         </div>
       `;
             $('#alert-container').html(alertHtml);
 
-            // Ẩn thông báo sau 3 giây
+            // Tự động ẩn thông báo sau 2 giây
             setTimeout(() => {
                 $('#alert-container').fadeOut('slow', function () {
-                    $(this).html('').show(); // Xóa nội dung sau khi ẩn
+                    $(this).html('').show(); // Xóa nội dung thông báo sau khi ẩn
                 });
-            }, 3000);
-        }
-
-        // Hàm phát âm thanh
-        function playSound(soundId) {
-            const sound = document.getElementById(soundId);
-            if (sound) {
-                sound.currentTime = 0;
-                sound.play();
-            }
+            }, 2000);
         }
 
         // Hàm xử lý khi QR Code được quét thành công
         function onScanSuccess(decodedText, decodedResult) {
             console.log(`QR Code scanned: ${decodedText}`);
 
-            // Hiển thị thông báo thành công và phát âm thanh
+            // Hiển thị thông báo thành công
             showAlert(`QR Code quét thành công: ${decodedText}`, "success");
-            playSound("success-sound");
 
             // Gửi chuỗi giải mã đến backend để kiểm tra
             $.ajax({
@@ -70,7 +54,6 @@
                 error: function (xhr, status, error) {
                     console.error("Error: ", error);
                     showAlert("Có lỗi xảy ra trong quá trình xử lý.", "danger");
-                    playSound("error-sound");
                 }
             });
         }
@@ -88,7 +71,6 @@
         ).catch((err) => {
             console.error("Không thể khởi động camera: ", err);
             showAlert("Không thể khởi động camera.", "danger");
-            playSound("error-sound");
         });
     });
 </script>

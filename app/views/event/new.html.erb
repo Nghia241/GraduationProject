@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <h5>Chi tiết sự kiện</h5>
+  <h5>Tạo mới sự kiện</h5>
   <%= form_with model: @event, url: event_index_path, local: true do |f| %>
     <div class="row">
       <!-- Cột hình ảnh -->
@@ -40,7 +40,6 @@
 
         <div class="form-group mt-3">
           <%= f.submit "Xác nhận", class: "btn btn-primary" %>
-          <%= link_to "QR Code", event_index_path, class: "btn btn-secondary" %>
         </div>
       </div>
     </div>

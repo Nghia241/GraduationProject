@@ -15,25 +15,25 @@
                       style: "max-height: 300px;",
                       alt: @event.name || "Event Image" %>
       </div>
-
-      <!-- Hiển thị thông tin sự kiện -->
-      <div class="mb-3">
-        <label class="form-label text-primary">Tên sự kiện:</label>
-        <p><%= @event.name %></p>
-      </div>
-      <div class="mb-3">
-        <label class="form-label text-primary">Địa điểm:</label>
-        <p><%= @event.location %></p>
-      </div>
-      <div class="mb-3">
-        <label class="form-label text-primary">Thời gian bắt đầu:</label>
-        <p><%= @event.start_time %></p>
-      </div>
-      <div class="mb-3">
-        <label class="form-label text-primary">Thời gian kết thúc:</label>
-        <p><%= @event.end_time %></p>
-      </div>
-
+      <% if current_user.system_role_id == 3 %>
+        <!-- Hiển thị thông tin sự kiện -->
+        <div class="mb-3">
+          <label class="form-label text-primary">Tên sự kiện:</label>
+          <p><%= @event.name %></p>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-primary">Địa điểm:</label>
+          <p><%= @event.location %></p>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-primary">Thời gian bắt đầu:</label>
+          <p><%= @event.start_time %></p>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-primary">Thời gian kết thúc:</label>
+          <p><%= @event.end_time %></p>
+        </div>
+      <% end %>
       <!-- Chỉ hiển thị biểu mẫu chỉnh sửa nếu không phải người dùng role_id = 3 -->
       <% if current_user.system_role_id != 3 %>
         <%= form_with model: @event, url: event_path(@event), method: :patch, local: true do |f| %>
@@ -76,8 +76,14 @@
 
       <!-- Nút quay lại -->
       <div class="d-flex justify-content-between mt-4">
-        <%= link_to "Quay lại danh sách sự kiện", event_index_path, class: "btn btn-secondary" %>
-        <%= link_to "Xem QR Code", qrcode_event_path(@event), class: "btn btn-primary" %>
+        <% if current_user.system_role_id == 1 %>
+          <%= link_to "Quay lại danh sách sự kiện", event_index_path, class: "btn btn-secondary" %>
+        <% else %>
+          <%= link_to "Quay lại danh sách sự kiện", event_details_event_index_path, class: "btn btn-secondary" %>
+        <% end %>
+        <% unless current_user.system_role_id == 1 %>
+          <%= link_to "Xem QR Code", qrcode_event_path(@event), class: "btn btn-primary" %>
+        <% end %>
         <% if current_user.system_role_id != 3 %>
           <% if current_user.system_role_id == 1 %>
             <%= link_to "Xóa sự kiện", event_path(@event), method: :delete, data: { confirm: "Bạn có chắc chắn muốn xóa sự kiện này?" }, class: "btn btn-danger" %>

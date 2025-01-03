@@ -83,6 +83,7 @@
                     // Cập nhật trạng thái nhân viên trong giao diện
                     row.find(".status").html('<span class="badge badge-success">Đã tham gia</span>');
                     row.find(".add-employee").removeClass("btn-primary add-employee").addClass("btn-danger remove-employee").text("Xóa NV");
+                    location.reload()
                 },
                 error: function (xhr) {
                     alert("Không thể thêm nhân viên. Vui lòng thử lại.");
@@ -110,6 +111,7 @@
                     // Cập nhật trạng thái nhân viên trong giao diện
                     row.find(".status").html('<span class="badge badge-secondary">Chưa tham gia</span>');
                     row.find(".remove-employee").removeClass("btn-danger remove-employee").addClass("btn-primary add-employee").text("Thêm NV");
+                    location.reload()
                 },
                 error: function (xhr) {
                     alert("Không thể xóa nhân viên. Vui lòng thử lại.");

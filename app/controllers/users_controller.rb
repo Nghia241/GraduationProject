@@ -9,8 +9,7 @@ class UsersController < ApplicationController
                  .where.not(id: current_user.id) # Loại bỏ current_user
                  .page(params[:page])           # Thêm phân trang
                  .per(10)                       # Số lượng người dùng mỗi trang
-
-    @roles = SystemRole.all
+    @roles = SystemRole.all.where.not(role_name: "super admin")
   end
 
   # Cập nhật quyền người dùng

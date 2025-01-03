@@ -16,8 +16,8 @@
     </div>
     <div class="col-md-4 text-end">
       <div class="btn-group">
-        <%= link_to "Tất cả", employees_list_event_path(@event), class: "btn btn-secondary" %>
-        <%= link_to "Đã tham gia", employees_list_event_path(@event, status: 'participated'), class: "btn btn-success" %>
+        <%= link_to "Tất cả", employees_list_event_path(@event), class: "btn btn-secondary me-2" %>
+        <%= link_to "Đã tham gia", employees_list_event_path(@event, status: 'participated'), class: "btn btn-success me-2" %>
         <%= link_to "Chưa tham gia", employees_list_event_path(@event, status: 'not_participated'), class: "btn btn-warning" %>
       </div>
     </div>

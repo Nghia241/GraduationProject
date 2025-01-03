@@ -1,6 +1,10 @@
 <div class="container mt-5 p-3">
-  <h2 class="d-none d-md-block mb-4 text-center">Thay đổi thông tin cá nhân</h2>
-  <h2 class="d-block d-md-none text-center mb-4 mt-3">Cập nhật thông tin</h2>
+  <h2 class="d-none d-md-block mb-4 text-center text-primary">
+    <i class="fas fa-user-edit me-2"></i>THAY ĐỔI THÔNG TIN CÁ NHÂN
+  </h2>
+  <h2 class="d-block d-md-none text-center mb-4 mt-3 text-primary">
+    <i class="fas fa-user-edit me-2"></i>CẬP NHẬT THÔNG TIN
+  </h2>
 
   <div class="row">
     <!-- Sidebar -->
@@ -11,9 +15,6 @@
         </a>
         <a href="<%= edit_password_profile_path %>" class="list-group-item list-group-item-action">
           <i class="fas fa-lock"></i> Đổi mật khẩu
-        </a>
-        <a href="<%= destroy_user_session_path %>" class="list-group-item list-group-item-action text-danger">
-          <i class="fas fa-sign-out-alt"></i> Đăng xuất
         </a>
       </div>
     </div>

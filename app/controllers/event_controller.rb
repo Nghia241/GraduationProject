@@ -193,7 +193,7 @@ class EventController < ApplicationController
 
   def decode
     encoded_data = params[:qr_data].to_s
-    event_id = params[:event_id]
+    event_id = params[:id]
 
     begin
       # Giải mã Base64
@@ -201,11 +201,12 @@ class EventController < ApplicationController
 
       # Parse JSON để lấy thông tin
       parsed_data = JSON.parse(decoded_data)
-      event_id_qr = parsed_data["event_id_qr"]
+      event_id_qr = parsed_data["event_id"]
       user_id = parsed_data["user_id"]
 
       # Kiểm tra tính hợp lệ
-      if event_id_qr == event_id && User.find_by(id: user_id).present?
+      if event_id_qr == event_id.to_i && Ticket.find_by(user_id: user_id, event_id:).present?
+        Ticket.find_by(user_id: user_id, event_id:).update(checked_in: true)
         render json: { message: "QR Code hợp lệ!", event_id: event_id_qr, user_id: user_id }, status: :ok
       else
         render json: { message: "QR Code không hợp lệ hoặc không khớp với sự kiện." }, status: :unprocessable_entity
@@ -216,7 +217,7 @@ class EventController < ApplicationController
       render json: { error: "Dữ liệu QR Code không hợp lệ: #{e.message}" }, status: :unprocessable_entity
     rescue StandardError => e
       # Xử lý lỗi khác
-      render json: { error: "Đã xảy ra lỗi trong quá trình xử lý: #{e.message}" }, status: :internal_server_error
+      render json: { error: "QR không đúng vui lòng quét lại: #{e.message}" }, status: :internal_server_error
     end
   end
 

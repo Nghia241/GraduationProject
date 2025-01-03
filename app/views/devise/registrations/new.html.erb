@@ -1,35 +1,75 @@
 <div class="container mt-5">
-  <h2 class="text-center">Tạo tài khoản mới</h2>
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "form-horizontal" }) do |f| %>
-    <div class="form-group">
-      <%= f.label :name, "Họ và tên", class: "control-label" %>
-      <%= f.text_field :name, class: "form-control" %>
-    </div>
+  <h2 class="text-center text-primary mb-4">
+    <i class="bi bi-person-plus-fill me-2"></i>Tạo tài khoản mới
+  </h2>
+  <div class="card shadow-lg p-4">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "form-horizontal" }) do |f| %>
+      <div class="form-group mb-3">
+        <label for="name" class="form-label">
+          <i class="bi bi-person-fill me-2 text-primary"></i>Họ và tên
+        </label>
+        <%= f.text_field :name, class: "form-control", placeholder: "Nhập họ và tên" %>
+      </div>
 
-    <div class="form-group">
-      <%= f.label :email, "Email", class: "control-label" %>
-      <%= f.email_field :email, class: "form-control" %>
-    </div>
+      <div class="form-group mb-3">
+        <label for="email" class="form-label">
+          <i class="bi bi-envelope-fill me-2 text-primary"></i>Email
+        </label>
+        <%= f.email_field :email, class: "form-control", placeholder: "Nhập email" %>
+      </div>
 
-    <div class="form-group">
-      <%= f.label :password, "Mật khẩu", class: "control-label" %>
-      <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
-    </div>
+      <div class="form-group mb-3">
+        <label for="password" class="form-label">
+          <i class="bi bi-lock-fill me-2 text-primary"></i>Mật khẩu
+        </label>
+        <%= f.password_field :password, autocomplete: "new-password", class: "form-control", placeholder: "Nhập mật khẩu" %>
+      </div>
 
-    <div class="form-group">
-      <%= f.label :password_confirmation, "Xác nhận mật khẩu", class: "control-label" %>
-      <%= f.password_field :password_confirmation, class: "form-control" %>
-    </div>
+      <div class="form-group mb-3">
+        <label for="password_confirmation" class="form-label">
+          <i class="bi bi-lock-fill me-2 text-primary"></i>Xác nhận mật khẩu
+        </label>
+        <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Nhập lại mật khẩu" %>
+      </div>
 
-    <!-- Thêm các trường hidden -->
-    <%= f.hidden_field :system_role_id, value: 3 %>
-    <%= f.hidden_field :language_id, value: 1 %>
+      <!-- Hidden fields -->
+      <%= f.hidden_field :system_role_id, value: 3 %>
+      <%= f.hidden_field :language_id, value: 1 %>
 
-    <div class="form-group mt-3">
-      <%= f.submit "Đăng ký", class: "btn btn-primary btn-block" %>
+      <div class="form-group d-grid gap-2 mt-4">
+        <%= f.submit "Đăng ký", class: "btn btn-primary btn-lg" %>
+      </div>
+    <% end %>
+
+    <div class="text-center mt-3">
+      <%= link_to "Đã có tài khoản? Đăng nhập", new_user_session_path, class: "text-decoration-none text-primary" %>
     </div>
-  <% end %>
-  <div class="text-center mt-3">
-    <%= link_to "Đã có tài khoản? Đăng nhập", new_user_session_path %>
   </div>
 </div>
+
+<style>
+    .card {
+        border-radius: 15px;
+        background: #f8f9fa; /* Light background for the card */
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+        padding: 12px;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 5px rgba(78, 115, 223, 0.5); /* Light blue glow on focus */
+        border-color: #4e73df;
+    }
+
+    .btn-primary {
+        background: linear-gradient(90deg, #4e73df, #2e59d9);
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(90deg, #2e59d9, #4e73df);
+    }
+</style>

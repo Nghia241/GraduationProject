@@ -1,28 +1,71 @@
-<div class="d-flex flex-column p-3 vh-100 d-none d-md-block" id="desktopSidebar" style="background-color: grey">
+<div class="d-flex flex-column p-3 vh-100 d-none d-md-block" id="desktopSidebar" style="color: white;">
   <ul class="nav nav-pills flex-column mb-auto">
     <% if current_user.system_role_id == 1 %>
       <li class="nav-item <%= active_class('/home') %>">
-        <%= link_to "Tổng quan", home_index_path, class: "nav-link #{active_class(home_index_path)} text-white" %>
+        <%= link_to home_index_path, class: "nav-link #{active_class(home_index_path)} d-flex align-items-center text-white" do %>
+          <i class="bi bi-house-door-fill me-2"></i> <!-- Home icon -->
+          Tổng quan
+        <% end %>
       </li>
       <li class="nav-item">
-        <%= link_to "Quản lý sự kiện", event_index_path, class: "nav-link #{active_class(event_index_path)} text-white" %>
+        <%= link_to event_index_path, class: "nav-link #{active_class(event_index_path)} d-flex align-items-center text-white" do %>
+          <i class="bi bi-calendar-event-fill me-2"></i> <!-- Event icon -->
+          Quản lý sự kiện
+        <% end %>
       </li>
     <% end %>
     <% if current_user.system_role_id == 3 || current_user.system_role_id == 2 %>
       <li class="nav-item">
-        <%= link_to "Quản lý sự kiện cá nhân", event_details_event_index_path, class: "nav-link #{active_class(event_details_event_index_path)} text-white" %>
+        <%= link_to event_details_event_index_path, class: "nav-link #{active_class(event_details_event_index_path)} d-flex align-items-center text-white" do %>
+          <i class="bi bi-calendar2-check-fill me-2"></i> <!-- Personal Event icon -->
+          Quản lý sự kiện cá nhân
+        <% end %>
       </li>
     <% end %>
     <li>
-      <%= link_to "Tài khoản", profile_path, class: "nav-link #{active_class(profile_path)} text-white" %>
+      <%= link_to profile_path, class: "nav-link #{active_class(profile_path)} d-flex align-items-center text-white" do %>
+        <i class="bi bi-person-circle me-2"></i> <!-- Profile icon -->
+        Tài khoản
+      <% end %>
     </li>
     <% if current_user.system_role_id == 1 %>
       <li>
-        <%= link_to "Quản lý thẩm quyền", role_manager_users_path, class: "nav-link #{active_class(role_manager_users_path)} text-white" %>
+        <%= link_to role_manager_users_path, class: "nav-link #{active_class(role_manager_users_path)} d-flex align-items-center text-white" do %>
+          <i class="bi bi-shield-lock-fill me-2"></i> <!-- Role Manager icon -->
+          Quản lý thẩm quyền
+        <% end %>
       </li>
     <% end %>
     <li>
-      <%= link_to 'Đăng xuất', destroy_user_session_path, method: :delete, class: 'nav-link text-warning' %>
+      <%= link_to destroy_user_session_path, method: :delete, class: 'nav-link d-flex align-items-center text-warning' do %>
+        <i class="bi bi-box-arrow-right me-2"></i> <!-- Logout icon -->
+        Đăng xuất
+      <% end %>
     </li>
   </ul>
 </div>
+
+<style>
+    #desktopSidebar {
+        background: linear-gradient(45deg, #ff6f61, #ffba08, #1dd1a1, #00d2ff, #54a0ff, #9b59b6);
+        background-size: 300% 300%;
+        animation: gradientAnimation 10s ease infinite;
+    }
+
+    @keyframes gradientAnimation {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    .nav-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+    }
+</style>

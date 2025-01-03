@@ -57,5 +57,7 @@ Rails.application.routes.draw do
   # Routes cho vé (Ticket)
   resources :tickets, only: [:new, :create]
 
-  # Các routes khác...
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 end

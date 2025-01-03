@@ -1,0 +1,60 @@
+<div class="container mt-5">
+  <h2 class="text-center text-primary mb-4">
+    <i class="bi bi-lock-fill me-2"></i>Thay đổi mật khẩu
+  </h2>
+  <div class="card shadow-lg p-4">
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "form-horizontal" }) do |f| %>
+      <!-- Hidden Token Field -->
+      <%= f.hidden_field :reset_password_token %>
+
+      <div class="form-group mb-3">
+        <label for="password" class="form-label">
+          <i class="bi bi-key-fill me-2 text-primary"></i>Mật khẩu mới
+        </label>
+        <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: "form-control", placeholder: "Nhập mật khẩu mới" %>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="password_confirmation" class="form-label">
+          <i class="bi bi-key-fill me-2 text-primary"></i>Xác nhận mật khẩu
+        </label>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", placeholder: "Nhập lại mật khẩu" %>
+      </div>
+
+      <div class="form-group d-grid gap-2 mt-4">
+        <%= f.submit "Đổi mật khẩu", class: "btn btn-primary btn-lg" %>
+      </div>
+    <% end %>
+
+    <div class="text-center mt-3">
+      <%= link_to "Quay lại trang đăng nhập", new_session_path(resource_name), class: "text-decoration-none text-primary" %>
+    </div>
+  </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 15px;
+        background: #f8f9fa; /* Light background for the card */
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+        padding: 12px;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 5px rgba(78, 115, 223, 0.5); /* Light blue glow on focus */
+        border-color: #4e73df;
+    }
+
+    .btn-primary {
+        background: linear-gradient(90deg, #4e73df, #2e59d9);
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(90deg, #2e59d9, #4e73df);
+    }
+</style>

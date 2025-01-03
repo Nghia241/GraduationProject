@@ -4,12 +4,15 @@ class UsersController < ApplicationController
 
   # Hiển thị danh sách người dùng
   def role_manager
-    # Lấy danh sách người dùng, loại bỏ current_user và sử dụng phân trang
-    @users = User.includes(:system_role)
-                 .where.not(id: current_user.id) # Loại bỏ current_user
-                 .page(params[:page])           # Thêm phân trang
-                 .per(10)                       # Số lượng người dùng mỗi trang
-    @roles = SystemRole.all.where.not(role_name: "super admin")
+    @q = User.ransack(params[:q]) # Tạo một đối tượng tìm kiếm Ransack
+
+    # Lấy danh sách người dùng (loại trừ current_user)
+    @users = @q.result.includes(:system_role)
+               .where.not(id: current_user.id)
+               .page(params[:page])
+               .per(10)
+
+    @roles = SystemRole.all.where.not(role_name: "super admin") # Loại bỏ role "super admin"
   end
 
   # Cập nhật quyền người dùng

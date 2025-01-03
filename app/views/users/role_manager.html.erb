@@ -1,10 +1,23 @@
 <div class="container mt-4">
   <h1 class="text-center">Quản lý quyền người dùng</h1>
+  <div class="mb-3 d-flex justify-content-between">
+    <%= search_form_for @q, url: role_manager_users_path, method: :get, html: { class: "d-flex" } do |f| %>
+      <%= f.text_field :name_or_email_cont, class: "form-control me-2", placeholder: "Tìm kiếm tên hoặc email" %>
+      <%= f.submit "Tìm kiếm", class: "btn btn-secondary me-2" %>
+    <% end %>
 
+    <!-- Nút lọc -->
+    <div>
+      <%= link_to "Lọc Admin", role_manager_users_path(q: { system_role_role_name_eq: "admin" }), class: "btn btn-primary me-2" %>
+      <%= link_to "Lọc User", role_manager_users_path(q: { system_role_role_name_eq: "user" }), class: "btn btn-success" %>
+      <%= link_to "Hiển thị tất cả", role_manager_users_path, class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
   <table class="table table-bordered table-hover">
     <thead>
     <tr>
-      <th>Tài khoản</th>
+      <th>Tên</th>
+      <th>Email</th>
       <th>Quyền</th>
       <th>Hành động</th>
     </tr>
@@ -12,6 +25,7 @@
     <tbody id="user-table">
     <% @users.each do |user| %>
       <tr data-user-id="<%= user.id %>">
+        <td><%= user.name %></td> <!-- Cột Tên -->
         <td><%= user.email %></td>
         <td>
           <select class="form-select role-select" data-user-id="<%= user.id %>">
@@ -29,6 +43,7 @@
     <% end %>
     </tbody>
   </table>
+
   <nav>
     <%= paginate @users %>
   </nav>

@@ -5,7 +5,8 @@ class EventController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @events = Event.page(params[:page]).per(6)
+    @q = Event.ransack(params[:q]) # Tạo một đối tượng tìm kiếm từ Ransack
+    @events = @q.result.page(params[:page]).per(6) # Kết quả tìm kiếm được phân trang
   end
 
   def new

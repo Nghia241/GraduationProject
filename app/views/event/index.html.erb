@@ -7,6 +7,15 @@
           <a class="btn btn-primary" href="<%= new_event_path %>">Tạo mới</a>
         <% end %>
       </div>
+
+      <!-- Form tìm kiếm -->
+      <div class="mb-3">
+        <%= search_form_for @q, url: event_index_path, method: :get, html: { class: "d-flex" } do |f| %>
+          <%= f.text_field :name_cont, class: "form-control me-2", placeholder: "Tìm kiếm tên sự kiện" %>
+          <%= f.submit "Tìm kiếm", class: "btn btn-secondary" %>
+        <% end %>
+      </div>
+
       <table class="table table-bordered">
         <thead>
         <tr>

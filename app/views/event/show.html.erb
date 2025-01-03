@@ -1,96 +1,107 @@
 <div class="container mt-5">
   <div class="card shadow">
-    <div class="card-header bg-primary text-white">
+    <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
       <% if current_user.system_role_id != 3 %>
-        <h3 class="card-title text-center">Chi tiết sự kiện và Chỉnh sửa</h3>
+        <h3 class="card-title mb-0">
+          <i class="bi bi-pencil-square me-2"></i> Chi tiết sự kiện và Chỉnh sửa
+        </h3>
       <% else %>
-        <h3 class="card-title text-center">Chi tiết sự kiện</h3>
+        <h3 class="card-title mb-0">
+          <i class="bi bi-info-circle me-2"></i> Chi tiết sự kiện
+        </h3>
       <% end %>
     </div>
     <div class="card-body">
       <!-- Hiển thị ảnh sự kiện -->
       <div class="text-center mb-4">
         <%= image_tag @event.image.attached? ? url_for(@event.image) : "https://skala.or.id/wp-content/uploads/2024/01/dummy-post-square-1-1.jpg",
-                      class: "img-fluid rounded",
-                      style: "max-height: 300px;",
+                      class: "img-fluid rounded shadow",
+                      style: "max-height: 300px; object-fit: cover;",
                       alt: @event.name || "Event Image" %>
       </div>
+
       <% if current_user.system_role_id == 3 %>
         <!-- Hiển thị thông tin sự kiện -->
-        <div class="mb-3">
-          <label class="form-label text-primary">Tên sự kiện:</label>
-          <p><%= @event.name %></p>
-        </div>
-        <div class="mb-3">
-          <label class="form-label text-primary">Địa điểm:</label>
-          <p><%= @event.location %></p>
-        </div>
-        <div class="mb-3">
-          <label class="form-label text-primary">Thời gian bắt đầu:</label>
-          <p><%= @event.start_time %></p>
-        </div>
-        <div class="mb-3">
-          <label class="form-label text-primary">Thời gian kết thúc:</label>
-          <p><%= @event.end_time %></p>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-primary">
+              <i class="bi bi-tag"></i> Tên sự kiện:
+            </label>
+            <p class="fw-bold"><%= @event.name %></p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-primary">
+              <i class="bi bi-geo-alt"></i> Địa điểm:
+            </label>
+            <p class="fw-bold"><%= @event.location %></p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-primary">
+              <i class="bi bi-clock"></i> Thời gian bắt đầu:
+            </label>
+            <p class="fw-bold"><%= @event.start_time %></p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-primary">
+              <i class="bi bi-clock-history"></i> Thời gian kết thúc:
+            </label>
+            <p class="fw-bold"><%= @event.end_time %></p>
+          </div>
         </div>
       <% end %>
-      <!-- Chỉ hiển thị biểu mẫu chỉnh sửa nếu không phải người dùng role_id = 3 -->
+
       <% if current_user.system_role_id != 3 %>
+        <!-- Biểu mẫu chỉnh sửa sự kiện -->
         <%= form_with model: @event, url: event_path(@event), method: :patch, local: true do |f| %>
-          <!-- Tên sự kiện -->
-          <div class="mb-3">
-            <%= f.label :name, "Tên sự kiện", class: "form-label text-primary" %>
-            <%= f.text_field :name, class: "form-control" %>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <%= f.label :name, "Tên sự kiện", class: "form-label text-primary" %>
+              <%= f.text_field :name, class: "form-control" %>
+            </div>
+            <div class="col-md-6 mb-3">
+              <%= f.label :location, "Địa điểm", class: "form-label text-primary" %>
+              <%= f.text_field :location, class: "form-control" %>
+            </div>
+            <div class="col-md-6 mb-3">
+              <%= f.label :start_time, "Thời gian bắt đầu", class: "form-label text-primary" %>
+              <%= f.datetime_select :start_time, class: "form-control" %>
+            </div>
+            <div class="col-md-6 mb-3">
+              <%= f.label :end_time, "Thời gian kết thúc", class: "form-label text-primary" %>
+              <%= f.datetime_select :end_time, class: "form-control" %>
+            </div>
+            <div class="col-12 mb-3">
+              <%= f.label :image, "Hình ảnh sự kiện", class: "form-label text-primary" %>
+              <%= f.file_field :image, class: "form-control" %>
+            </div>
           </div>
-
-          <!-- Địa điểm -->
-          <div class="mb-3">
-            <%= f.label :location, "Địa điểm", class: "form-label text-primary" %>
-            <%= f.text_field :location, class: "form-control" %>
-          </div>
-
-          <!-- Thời gian bắt đầu -->
-          <div class="mb-3">
-            <%= f.label :start_time, "Thời gian bắt đầu", class: "form-label text-primary" %>
-            <%= f.datetime_select :start_time, class: "form-control" %>
-          </div>
-
-          <!-- Thời gian kết thúc -->
-          <div class="mb-3">
-            <%= f.label :end_time, "Thời gian kết thúc", class: "form-label text-primary" %>
-            <%= f.datetime_select :end_time, class: "form-control" %>
-          </div>
-
-          <!-- Ảnh sự kiện -->
-          <div class="mb-3">
-            <%= f.label :image, "Hình ảnh sự kiện", class: "form-label text-primary" %>
-            <%= f.file_field :image, class: "form-control" %>
-          </div>
-
-          <!-- Nút cập nhật -->
           <div class="text-center">
             <%= f.submit "Cập nhật sự kiện", class: "btn btn-success" %>
           </div>
         <% end %>
       <% end %>
 
-      <!-- Nút quay lại -->
-      <div class="d-flex justify-content-between mt-4">
-        <% if current_user.system_role_id == 1 %>
-          <%= link_to "Quay lại danh sách sự kiện", event_index_path, class: "btn btn-secondary" %>
-        <% else %>
-          <%= link_to "Quay lại danh sách sự kiện", event_details_event_index_path, class: "btn btn-secondary" %>
-        <% end %>
-        <% unless current_user.system_role_id == 1 %>
-          <%= link_to "Xem QR Code", qrcode_event_path(@event), class: "btn btn-primary" %>
-        <% end %>
-        <% if current_user.system_role_id != 3 %>
+      <!-- Nút điều hướng -->
+      <div class="d-flex justify-content-between align-items-center mt-4">
+        <div>
           <% if current_user.system_role_id == 1 %>
-            <%= link_to "Xóa sự kiện", event_path(@event), method: :delete, data: { confirm: "Bạn có chắc chắn muốn xóa sự kiện này?" }, class: "btn btn-danger" %>
+            <%= link_to "Quay lại danh sách sự kiện", event_index_path, class: "btn btn-secondary" %>
+          <% else %>
+            <%= link_to "Quay lại danh sách sự kiện", event_details_event_index_path, class: "btn btn-secondary" %>
           <% end %>
-          <%= link_to "Quét QR Code", scan_qr_event_path(@event), class: "btn btn-primary" %>
-          <%= link_to "Danh sách nhân viên", employees_list_event_path(@event), class: "btn btn-primary" %>
-        <% end %>
+        </div>
+        <div class="d-flex gap-2">
+          <% unless current_user.system_role_id == 1 %>
+            <%= link_to "<i class='bi bi-qrcode'></i> Xem QR Code".html_safe, qrcode_event_path(@event), class: "btn btn-primary" %>
+          <% end %>
+          <% if current_user.system_role_id != 3 %>
+            <% if current_user.system_role_id == 1 %>
+              <%= link_to "<i class='bi bi-trash'></i> Xóa sự kiện".html_safe, event_path(@event), method: :delete, data: { confirm: "Bạn có chắc chắn muốn xóa sự kiện này?" }, class: "btn btn-danger" %>
+            <% end %>
+            <%= link_to "<i class='bi bi-qr-code-scan'></i> Quét QR Code".html_safe, scan_qr_event_path(@event), class: "btn btn-primary" %>
+            <%= link_to "<i class='bi bi-people'></i> Danh sách nhân viên".html_safe, employees_list_event_path(@event), class: "btn btn-primary" %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

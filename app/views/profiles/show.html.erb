@@ -1,37 +1,58 @@
-<div class="container mt-5 p-2">
-  <h2 class="d-none d-md-block mb-3">THAY ĐỔI THÔNG TIN CÁ NHÂN </h2>
-  <h2 class="d-block d-md-none text-center mb-3 mt-3"></h2>
+<div class="container mt-5 p-3">
+  <h2 class="d-none d-md-block mb-4 text-center">Thay đổi thông tin cá nhân</h2>
+  <h2 class="d-block d-md-none text-center mb-4 mt-3">Cập nhật thông tin</h2>
 
   <div class="row">
-    <div class="col-md-3">
-      <!-- Sidebar -->
-      <div class="list-group">
-        <a href="<%= profile_path %>" class="list-group-item list-group-item-action active">Thông tin cá nhân</a>
-        <a href="<%= edit_password_profile_path %>" class="list-group-item list-group-item-action">Đổi mật khẩu</a>
-        <a href="<%= destroy_user_session_path %>" class="list-group-item list-group-item-action text-danger">Đăng xuất</a>
+    <!-- Sidebar -->
+    <div class="col-md-3 mb-4">
+      <div class="list-group shadow-sm">
+        <a href="<%= profile_path %>" class="list-group-item list-group-item-action active">
+          <i class="fas fa-user-circle"></i> Thông tin cá nhân
+        </a>
+        <a href="<%= edit_password_profile_path %>" class="list-group-item list-group-item-action">
+          <i class="fas fa-lock"></i> Đổi mật khẩu
+        </a>
+        <a href="<%= destroy_user_session_path %>" class="list-group-item list-group-item-action text-danger">
+          <i class="fas fa-sign-out-alt"></i> Đăng xuất
+        </a>
       </div>
     </div>
+
+    <!-- Form thông tin cá nhân -->
     <div class="col-md-9">
-      <!-- Form thông tin cá nhân -->
-      <div class="card">
-        <div class="card-header bg-primary text-white">Thông tin cá nhân</div>
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <i class="fas fa-user-edit"></i> Thông tin cá nhân
+        </div>
         <div class="card-body">
           <%= form_with model: @user, url: profile_path, method: :patch, local: true do |f| %>
-            <div class="mb-3">
-              <%= f.label :name, "Họ và tên" %>
-              <%= f.text_field :name, class: "form-control" %>
+            <div class="mb-4">
+              <%= f.label :name, "Họ và tên", class: "form-label fw-bold" %>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+                <%= f.text_field :name, class: "form-control", placeholder: "Nhập họ và tên" %>
+              </div>
             </div>
-            <div class="mb-3">
-              <%= f.label :email, "Email" %>
-              <%= f.email_field :email, class: "form-control", disabled: true %>
+            <div class="mb-4">
+              <%= f.label :email, "Email", class: "form-label fw-bold" %>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
+                <%= f.email_field :email, class: "form-control", disabled: true, placeholder: "Email của bạn" %>
+              </div>
             </div>
-            <div class="mb-3">
-              <%= f.label :language_id, "Ngôn ngữ" %>
-              <%= f.select :language_id, options_for_select([["Tiếng Anh", 1], ["Tiếng Việt", 2]], @user.language_id),
-                           { prompt: "Chọn ngôn ngữ" },
-                           { class: "form-control" } %>
+            <div class="mb-4">
+              <%= f.label :language_id, "Ngôn ngữ", class: "form-label fw-bold" %>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="fas fa-language"></i></span>
+                <%= f.select :language_id,
+                             options_for_select([["Tiếng Anh", 1], ["Tiếng Việt", 2]], @user.language_id),
+                             { prompt: "Chọn ngôn ngữ" },
+                             { class: "form-select" } %>
+              </div>
             </div>
-            <%= f.submit "Xác nhận", class: "btn btn-primary" %>
+            <div class="text-end">
+              <%= f.submit "Xác nhận", class: "btn btn-primary px-4" %>
+            </div>
           <% end %>
         </div>
       </div>

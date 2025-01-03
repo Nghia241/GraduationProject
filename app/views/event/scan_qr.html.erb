@@ -22,12 +22,12 @@
       `;
             $('#alert-container').html(alertHtml);
 
-            // Tự động ẩn thông báo sau 2 giây
+            // Tự động ẩn thông báo sau 4 giây
             setTimeout(() => {
                 $('#alert-container').fadeOut('slow', function () {
                     $(this).html('').show(); // Xóa nội dung thông báo sau khi ẩn
                 });
-            }, 2000);
+            }, 4000);
         }
 
         // Hàm xử lý khi QR Code được quét thành công

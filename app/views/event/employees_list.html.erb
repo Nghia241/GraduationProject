@@ -1,152 +1,161 @@
-<div class="container mt-4">
-  <h1 class="text-center">Quản lý nhân viên tham gia sự kiện</h1>
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Quản lý nhân viên tham gia sự kiện</h1>
 
   <!-- Tìm kiếm -->
-  <div class="row mb-3">
+  <div class="row mb-4 align-items-center">
     <div class="col-md-8">
       <%= search_form_for @q, url: employees_list_event_path(@event) do |f| %>
         <div class="input-group">
+          <span class="input-group-text bg-light"><i class="fas fa-search"></i></span>
           <%= f.text_field :name_cont, class: "form-control", placeholder: "Tìm kiếm theo tên..." %>
-          <div class="input-group-append">
-            <%= f.submit "Tìm kiếm", class: "btn btn-primary" %>
-          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-filter"></i> Tìm kiếm
+          </button>
         </div>
       <% end %>
     </div>
-    <div class="col-md-4 text-right">
-      <%= link_to "Tất cả", employees_list_event_path(@event), class: "btn btn-secondary" %>
-      <%= link_to "Đã tham gia", employees_list_event_path(@event, status: 'participated'), class: "btn btn-success" %>
-      <%= link_to "Chưa tham gia", employees_list_event_path(@event, status: 'not_participated'), class: "btn btn-warning" %>
+    <div class="col-md-4 text-end">
+      <div class="btn-group">
+        <%= link_to "Tất cả", employees_list_event_path(@event), class: "btn btn-secondary" %>
+        <%= link_to "Đã tham gia", employees_list_event_path(@event, status: 'participated'), class: "btn btn-success" %>
+        <%= link_to "Chưa tham gia", employees_list_event_path(@event, status: 'not_participated'), class: "btn btn-warning" %>
+      </div>
     </div>
   </div>
 
   <!-- Bảng danh sách nhân viên -->
-  <table class="table table-bordered table-hover">
-    <thead class="thead-dark">
-    <tr>
-      <th>STT</th>
-      <th>Họ và tên</th>
-      <th>Vai trò</th>
-      <th>Hành động</th>
-    </tr>
-    </thead>
-    <tbody id="employee-table" data-event-id="<%= @event.id %>">
-    <% @paginated_employees.each_with_index do |employee, index| %>
-      <tr data-user-id="<%= employee[:id] %>">
-        <td><%= (index + 1) + ((@paginated_employees.current_page - 1) * @paginated_employees.limit_value) %></td>
-        <td><%= employee[:name] %></td>
-        <td>
-          <% if employee[:has_ticket] %>
-            <select class="form-control change-role" data-user-id="<%= employee[:id] %>" data-event-id="<%= @event.id %>">
-              <%= options_for_select(Ticket.event_roles.keys.map { |role| [role.humanize, role] }, employee[:role]) %>
-            </select>
-          <% else %>
-            <span class="badge badge-secondary text-black">Không xác định</span>
-          <% end %>
-        </td>
-        <td>
-          <% if employee[:has_ticket] %>
-            <button class="btn btn-danger btn-sm remove-employee">Xóa NV</button>
-          <% else %>
-            <button class="btn btn-primary btn-sm add-employee">Thêm NV</button>
-          <% end %>
-        </td>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Họ và tên</th>
+        <th scope="col">Vai trò</th>
+        <th scope="col" class="text-center">Hành động</th>
       </tr>
-    <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody id="employee-table" data-event-id="<%= @event.id %>">
+      <% @paginated_employees.each_with_index do |employee, index| %>
+        <tr data-user-id="<%= employee[:id] %>">
+          <td><%= (index + 1) + ((@paginated_employees.current_page - 1) * @paginated_employees.limit_value) %></td>
+          <td><%= employee[:name] %></td>
+          <td>
+            <% if employee[:has_ticket] %>
+              <select class="form-select change-role" data-user-id="<%= employee[:id] %>" data-event-id="<%= @event.id %>">
+                <%= options_for_select(Ticket.event_roles.keys.map { |role| [role.humanize, role] }, employee[:role]) %>
+              </select>
+            <% else %>
+              <span class="badge bg-secondary text-light">Không xác định</span>
+            <% end %>
+          </td>
+          <td class="text-center">
+            <% if employee[:has_ticket] %>
+              <button class="btn btn-sm btn-danger remove-employee">
+                <i class="fas fa-user-minus"></i> Xóa NV
+              </button>
+            <% else %>
+              <button class="btn btn-sm btn-primary add-employee">
+                <i class="fas fa-user-plus"></i> Thêm NV
+              </button>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
 
   <!-- Phân trang -->
-  <nav>
+  <nav aria-label="Pagination">
     <%= paginate @paginated_employees %>
   </nav>
+
+  <script>
+      $(document).ready(function () {
+          // Thêm nhân viên vào sự kiện
+          $(document).on("click", ".add-employee", function () {
+              const row = $(this).closest("tr");
+              const userId = row.data("user-id"); // Lấy ID nhân viên từ data-user-id của hàng
+              const eventId = $("#employee-table").data("event-id"); // Lấy ID sự kiện từ data-event-id của tbody
+
+              // Kiểm tra console log để đảm bảo ID được truyền đúng
+              console.log("Thêm nhân viên", {userId, eventId});
+
+              $.ajax({
+                  url: `/event/${eventId}/add_employee_to_event`,
+                  method: "POST",
+                  data: {user_id: userId},
+                  success: function (response) {
+                      alert(response.message);
+
+                      // Cập nhật trạng thái nhân viên trong giao diện
+                      row.find(".status").html('<span class="badge badge-success">Đã tham gia</span>');
+                      row.find(".add-employee").removeClass("btn-primary add-employee").addClass("btn-danger remove-employee").text("Xóa NV");
+                      location.reload()
+                  },
+                  error: function (xhr) {
+                      alert("Không thể thêm nhân viên. Vui lòng thử lại.");
+                  },
+              });
+          });
+
+
+          // Xóa nhân viên khỏi sự kiện
+          $(document).on("click", ".remove-employee", function () {
+              const row = $(this).closest("tr");
+              const userId = row.data("user-id"); // Lấy ID nhân viên từ data-user-id của hàng
+              const eventId = $("#employee-table").data("event-id"); // Lấy ID sự kiện từ data-event-id của tbody
+
+              // Kiểm tra console log để đảm bảo ID được truyền đúng
+              console.log("Xóa nhân viên", {userId, eventId});
+
+              $.ajax({
+                  url: `/event/${eventId}/remove_employee_from_event`,
+                  method: "DELETE",
+                  data: {user_id: userId},
+                  success: function (response) {
+                      alert(response.message);
+
+                      // Cập nhật trạng thái nhân viên trong giao diện
+                      row.find(".status").html('<span class="badge badge-secondary">Chưa tham gia</span>');
+                      row.find(".remove-employee").removeClass("btn-danger remove-employee").addClass("btn-primary add-employee").text("Thêm NV");
+                      location.reload()
+                  },
+                  error: function (xhr) {
+                      alert("Không thể xóa nhân viên. Vui lòng thử lại.");
+                  },
+              });
+          });
+
+          $(document).on("change", ".change-role", function () {
+              const selectElement = $(this);
+              const userId = selectElement.data("user-id"); // Lấy user ID từ data attribute
+              const eventId = selectElement.data("event-id"); // Lấy event ID từ data attribute
+              const newRole = selectElement.val(); // Lấy giá trị vai trò mới được chọn
+
+              // Kiểm tra console để đảm bảo dữ liệu chính xác
+              console.log("Thay đổi vai trò:", {userId, eventId, newRole});
+
+              // Gửi yêu cầu AJAX đến server
+              $.ajax({
+                  url: `/event/${eventId}/change_role`, // Đường dẫn đến API change_role
+                  method: "POST", // Phương thức POST
+                  data: {
+                      user_id: userId,
+                      role: newRole,
+                  },
+                  success: function (response) {
+                      // Hiển thị thông báo thành công
+                      alert(response.message);
+                  },
+                  error: function (xhr) {
+                      // Hiển thị lỗi nếu có
+                      alert("Không thể cập nhật vai trò. Vui lòng thử lại.");
+                      console.error(xhr.responseText); // Ghi log lỗi ra console
+                  },
+              });
+          });
+      });
+
+  </script>
 </div>
-
-<script>
-    $(document).ready(function () {
-        // Thêm nhân viên vào sự kiện
-        $(document).on("click", ".add-employee", function () {
-            const row = $(this).closest("tr");
-            const userId = row.data("user-id"); // Lấy ID nhân viên từ data-user-id của hàng
-            const eventId = $("#employee-table").data("event-id"); // Lấy ID sự kiện từ data-event-id của tbody
-
-            // Kiểm tra console log để đảm bảo ID được truyền đúng
-            console.log("Thêm nhân viên", { userId, eventId });
-
-            $.ajax({
-                url: `/event/${eventId}/add_employee_to_event`,
-                method: "POST",
-                data: { user_id: userId },
-                success: function (response) {
-                    alert(response.message);
-
-                    // Cập nhật trạng thái nhân viên trong giao diện
-                    row.find(".status").html('<span class="badge badge-success">Đã tham gia</span>');
-                    row.find(".add-employee").removeClass("btn-primary add-employee").addClass("btn-danger remove-employee").text("Xóa NV");
-                    location.reload()
-                },
-                error: function (xhr) {
-                    alert("Không thể thêm nhân viên. Vui lòng thử lại.");
-                },
-            });
-        });
-
-
-        // Xóa nhân viên khỏi sự kiện
-        $(document).on("click", ".remove-employee", function () {
-            const row = $(this).closest("tr");
-            const userId = row.data("user-id"); // Lấy ID nhân viên từ data-user-id của hàng
-            const eventId = $("#employee-table").data("event-id"); // Lấy ID sự kiện từ data-event-id của tbody
-
-            // Kiểm tra console log để đảm bảo ID được truyền đúng
-            console.log("Xóa nhân viên", { userId, eventId });
-
-            $.ajax({
-                url: `/event/${eventId}/remove_employee_from_event`,
-                method: "DELETE",
-                data: { user_id: userId },
-                success: function (response) {
-                    alert(response.message);
-
-                    // Cập nhật trạng thái nhân viên trong giao diện
-                    row.find(".status").html('<span class="badge badge-secondary">Chưa tham gia</span>');
-                    row.find(".remove-employee").removeClass("btn-danger remove-employee").addClass("btn-primary add-employee").text("Thêm NV");
-                    location.reload()
-                },
-                error: function (xhr) {
-                    alert("Không thể xóa nhân viên. Vui lòng thử lại.");
-                },
-            });
-        });
-
-        $(document).on("change", ".change-role", function () {
-            const selectElement = $(this);
-            const userId = selectElement.data("user-id"); // Lấy user ID từ data attribute
-            const eventId = selectElement.data("event-id"); // Lấy event ID từ data attribute
-            const newRole = selectElement.val(); // Lấy giá trị vai trò mới được chọn
-
-            // Kiểm tra console để đảm bảo dữ liệu chính xác
-            console.log("Thay đổi vai trò:", { userId, eventId, newRole });
-
-            // Gửi yêu cầu AJAX đến server
-            $.ajax({
-                url: `/event/${eventId}/change_role`, // Đường dẫn đến API change_role
-                method: "POST", // Phương thức POST
-                data: {
-                    user_id: userId,
-                    role: newRole,
-                },
-                success: function (response) {
-                    // Hiển thị thông báo thành công
-                    alert(response.message);
-                },
-                error: function (xhr) {
-                    // Hiển thị lỗi nếu có
-                    alert("Không thể cập nhật vai trò. Vui lòng thử lại.");
-                    console.error(xhr.responseText); // Ghi log lỗi ra console
-                },
-            });
-        });
-    });
-
-</script>

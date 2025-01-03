@@ -1,22 +1,27 @@
 <div class="container pt-5">
-  <h2 class="d-none d-md-block">THÔNG SỐ TỔNG QUAN</h2>
-  <h2 class="d-block d-md-none text-center">THÔNG SỐ TỔNG QUAN</h2>
+  <h2 class="d-none d-md-block text-center mb-4">THÔNG SỐ TỔNG QUAN</h2>
+  <h2 class="d-block d-md-none text-center mb-4">THÔNG SỐ TỔNG QUAN</h2>
 
-  <div class="row mt-5">
-    <!-- Tổng số Admin -->
+  <div class="row mt-4 gy-4">
+    <!-- Tổng số Super Admin -->
     <div class="col-md-4">
-      <div class="card text-white bg-primary mb-3">
-        <div class="card-header">Số Super Admin</div>
-        <div class="card-body">
+      <div class="card text-white bg-primary shadow-sm">
+        <div class="card-header d-flex align-items-center">
+          <i class="fas fa-user-shield me-2"></i> Số Super Admin
+        </div>
+        <div class="card-body text-center">
           <h2 class="card-title"><%= @super_admin_count %></h2>
         </div>
       </div>
     </div>
 
+    <!-- Tổng số Admin -->
     <div class="col-md-4">
-      <div class="card text-white bg-primary mb-3">
-        <div class="card-header">Số Admin</div>
-        <div class="card-body">
+      <div class="card text-white bg-primary shadow-sm">
+        <div class="card-header d-flex align-items-center">
+          <i class="fas fa-user-cog me-2"></i> Số Admin
+        </div>
+        <div class="card-body text-center">
           <h2 class="card-title"><%= @admin_count %></h2>
         </div>
       </div>
@@ -24,9 +29,11 @@
 
     <!-- Tổng số Người dùng -->
     <div class="col-md-4">
-      <div class="card text-white bg-success mb-3">
-        <div class="card-header">Số Người dùng</div>
-        <div class="card-body">
+      <div class="card text-white bg-success shadow-sm">
+        <div class="card-header d-flex align-items-center">
+          <i class="fas fa-users me-2"></i> Số Người dùng
+        </div>
+        <div class="card-body text-center">
           <h2 class="card-title"><%= @user_count %></h2>
         </div>
       </div>
@@ -34,9 +41,11 @@
 
     <!-- Tổng số Sự kiện -->
     <div class="col-md-4">
-      <div class="card text-white bg-info mb-3">
-        <div class="card-header">Số Sự kiện</div>
-        <div class="card-body">
+      <div class="card text-white bg-info shadow-sm">
+        <div class="card-header d-flex align-items-center">
+          <i class="fas fa-calendar-alt me-2"></i> Số Sự kiện
+        </div>
+        <div class="card-body text-center">
           <h2 class="card-title"><%= @event_count %></h2>
         </div>
       </div>
@@ -44,22 +53,26 @@
 
     <!-- Số Sự kiện Sắp tới -->
     <div class="col-md-4">
-      <div class="card text-white bg-warning mb-3">
-        <div class="card-header">Sự kiện Sắp tới</div>
-        <div class="card-body">
+      <div class="card text-white bg-warning shadow-sm">
+        <div class="card-header d-flex align-items-center">
+          <i class="fas fa-calendar-check me-2"></i> Sự kiện Sắp tới
+        </div>
+        <div class="card-body text-center">
           <h2 class="card-title"><%= @upcoming_events_count %></h2>
         </div>
       </div>
     </div>
+
     <!-- Số Sự kiện Đã xảy ra -->
     <div class="col-md-4">
-      <div class="card text-white bg-danger mb-3">
-        <div class="card-header">Sự kiện Đã xảy ra</div>
-        <div class="card-body">
+      <div class="card text-white bg-danger shadow-sm">
+        <div class="card-header d-flex align-items-center">
+          <i class="fas fa-calendar-times me-2"></i> Sự kiện Đã xảy ra
+        </div>
+        <div class="card-body text-center">
           <h2 class="card-title"><%= @past_events_count %></h2>
         </div>
       </div>
     </div>
-
   </div>
 </div>

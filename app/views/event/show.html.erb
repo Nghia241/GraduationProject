@@ -3,11 +3,11 @@
     <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
       <% if current_user.system_role_id != 3 %>
         <h3 class="card-title mb-0">
-          <i class="bi bi-pencil-square me-2"></i> Chi tiết sự kiện và Chỉnh sửa
+          <i class="bi bi-pencil-square me-2"></i> <%= t('events.show.header_with_edit') %>
         </h3>
       <% else %>
         <h3 class="card-title mb-0">
-          <i class="bi bi-info-circle me-2"></i> Chi tiết sự kiện
+          <i class="bi bi-info-circle me-2"></i> <%= t('events.show.header_without_edit') %>
         </h3>
       <% end %>
     </div>
@@ -17,7 +17,7 @@
         <%= image_tag @event.image.attached? ? url_for(@event.image) : "https://skala.or.id/wp-content/uploads/2024/01/dummy-post-square-1-1.jpg",
                       class: "img-fluid rounded shadow",
                       style: "max-height: 300px; object-fit: cover;",
-                      alt: @event.name || "Event Image" %>
+                      alt: @event.name || t('events.show.image_alt') %>
       </div>
 
       <% if current_user.system_role_id == 3 %>
@@ -25,25 +25,25 @@
         <div class="row">
           <div class="col-md-6 mb-3">
             <label class="form-label text-primary">
-              <i class="bi bi-tag"></i> Tên sự kiện:
+              <i class="bi bi-tag"></i> <%= t('events.show.name') %>:
             </label>
             <p class="fw-bold"><%= @event.name %></p>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label text-primary">
-              <i class="bi bi-geo-alt"></i> Địa điểm:
+              <i class="bi bi-geo-alt"></i> <%= t('events.show.location') %>:
             </label>
             <p class="fw-bold"><%= @event.location %></p>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label text-primary">
-              <i class="bi bi-clock"></i> Thời gian bắt đầu:
+              <i class="bi bi-clock"></i> <%= t('events.show.start_time') %>:
             </label>
             <p class="fw-bold"><%= @event.start_time %></p>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label text-primary">
-              <i class="bi bi-clock-history"></i> Thời gian kết thúc:
+              <i class="bi bi-clock-history"></i> <%= t('events.show.end_time') %>:
             </label>
             <p class="fw-bold"><%= @event.end_time %></p>
           </div>
@@ -55,28 +55,28 @@
         <%= form_with model: @event, url: event_path(@event), method: :patch, local: true do |f| %>
           <div class="row">
             <div class="col-md-6 mb-3">
-              <%= f.label :name, "Tên sự kiện", class: "form-label text-primary" %>
+              <%= f.label :name, t('events.show.name'), class: "form-label text-primary" %>
               <%= f.text_field :name, class: "form-control" %>
             </div>
             <div class="col-md-6 mb-3">
-              <%= f.label :location, "Địa điểm", class: "form-label text-primary" %>
+              <%= f.label :location, t('events.show.location'), class: "form-label text-primary" %>
               <%= f.text_field :location, class: "form-control" %>
             </div>
             <div class="col-md-6 mb-3">
-              <%= f.label :start_time, "Thời gian bắt đầu", class: "form-label text-primary" %>
+              <%= f.label :start_time, t('events.show.start_time'), class: "form-label text-primary" %>
               <%= f.datetime_select :start_time, class: "form-control" %>
             </div>
             <div class="col-md-6 mb-3">
-              <%= f.label :end_time, "Thời gian kết thúc", class: "form-label text-primary" %>
+              <%= f.label :end_time, t('events.show.end_time'), class: "form-label text-primary" %>
               <%= f.datetime_select :end_time, class: "form-control" %>
             </div>
             <div class="col-12 mb-3">
-              <%= f.label :image, "Hình ảnh sự kiện", class: "form-label text-primary" %>
+              <%= f.label :image, t('events.show.image_label'), class: "form-label text-primary" %>
               <%= f.file_field :image, class: "form-control" %>
             </div>
           </div>
           <div class="text-center">
-            <%= f.submit "Cập nhật sự kiện", class: "btn btn-success" %>
+            <%= f.submit t('events.show.update_button'), class: "btn btn-success" %>
           </div>
         <% end %>
       <% end %>
@@ -85,21 +85,21 @@
       <div class="d-flex justify-content-between align-items-center mt-4">
         <div>
           <% if current_user.system_role_id == 1 %>
-            <%= link_to "Quay lại danh sách sự kiện", event_index_path, class: "btn btn-secondary" %>
+            <%= link_to t('events.show.back_to_list'), event_index_path, class: "btn btn-secondary" %>
           <% else %>
-            <%= link_to "Quay lại danh sách sự kiện", event_details_event_index_path, class: "btn btn-secondary" %>
+            <%= link_to t('events.show.back_to_list'), event_details_event_index_path, class: "btn btn-secondary" %>
           <% end %>
         </div>
         <div class="d-flex gap-2">
           <% unless current_user.system_role_id == 1 %>
-            <%= link_to "<i class='bi bi-qrcode'></i> Xem QR Code".html_safe, qrcode_event_path(@event), class: "btn btn-primary" %>
+            <%= link_to "<i class='bi bi-qrcode'></i> #{t('events.show.view_qr_code')}".html_safe, qrcode_event_path(@event), class: "btn btn-primary" %>
           <% end %>
           <% if current_user.system_role_id != 3 %>
             <% if current_user.system_role_id == 1 %>
-              <%= link_to "<i class='bi bi-trash'></i> Xóa sự kiện".html_safe, event_path(@event), method: :delete, data: { confirm: "Bạn có chắc chắn muốn xóa sự kiện này?" }, class: "btn btn-danger" %>
+              <%= link_to "<i class='bi bi-trash'></i> #{t('events.show.delete_event')}".html_safe, event_path(@event), method: :delete, data: { confirm: t('events.show.confirm_delete') }, class: "btn btn-danger" %>
             <% end %>
-            <%= link_to "<i class='bi bi-qr-code-scan'></i> Quét QR Code".html_safe, scan_qr_event_path(@event), class: "btn btn-primary" %>
-            <%= link_to "<i class='bi bi-people'></i> Danh sách nhân viên".html_safe, employees_list_event_path(@event), class: "btn btn-primary" %>
+            <%= link_to "<i class='bi bi-qr-code-scan'></i> #{t('events.show.scan_qr_code')}".html_safe, scan_qr_event_path(@event), class: "btn btn-primary" %>
+            <%= link_to "<i class='bi bi-people'></i> #{t('events.show.employee_list')}".html_safe, employees_list_event_path(@event), class: "btn btn-primary" %>
           <% end %>
         </div>
       </div>

@@ -4,13 +4,13 @@
       <li class="nav-item <%= active_class('/home') %>">
         <%= link_to home_index_path, class: "nav-link #{active_class(home_index_path)} d-flex align-items-center text-white" do %>
           <i class="bi bi-house-door-fill me-2"></i> <!-- Home icon -->
-          Tổng quan
+          <%= t('sidebar.overview') %>
         <% end %>
       </li>
       <li class="nav-item">
         <%= link_to event_index_path, class: "nav-link #{active_class(event_index_path)} d-flex align-items-center text-white" do %>
           <i class="bi bi-calendar-event-fill me-2"></i> <!-- Event icon -->
-          Quản lý sự kiện
+          <%= t('sidebar.event_management') %>
         <% end %>
       </li>
     <% end %>
@@ -18,28 +18,28 @@
       <li class="nav-item">
         <%= link_to event_details_event_index_path, class: "nav-link #{active_class(event_details_event_index_path)} d-flex align-items-center text-white" do %>
           <i class="bi bi-calendar2-check-fill me-2"></i> <!-- Personal Event icon -->
-          Quản lý sự kiện cá nhân
+          <%= t('sidebar.personal_event_management') %>
         <% end %>
       </li>
     <% end %>
     <li>
       <%= link_to profile_path, class: "nav-link #{active_class(profile_path)} d-flex align-items-center text-white" do %>
         <i class="bi bi-person-circle me-2"></i> <!-- Profile icon -->
-        Tài khoản
+        <%= t('sidebar.account') %>
       <% end %>
     </li>
     <% if current_user.system_role_id == 1 %>
       <li>
         <%= link_to role_manager_users_path, class: "nav-link #{active_class(role_manager_users_path)} d-flex align-items-center text-white" do %>
           <i class="bi bi-shield-lock-fill me-2"></i> <!-- Role Manager icon -->
-          Quản lý thẩm quyền
+          <%= t('sidebar.role_management') %>
         <% end %>
       </li>
     <% end %>
     <li>
       <%= link_to destroy_user_session_path, method: :delete, class: 'nav-link d-flex align-items-center text-black' do %>
         <i class="bi bi-box-arrow-right me-2"></i> <!-- Logout icon -->
-        Đăng xuất
+        <%= t('sidebar.logout') %>
       <% end %>
     </li>
   </ul>

@@ -1,7 +1,7 @@
 <div class="container mt-5">
   <div class="card shadow">
     <div class="card-header bg-primary text-white">
-      <h3 class="text-center">Quét QR Code</h3>
+      <h3 class="text-center"><%= t('events.scan_qr.title') %></h3>
     </div>
     <div class="card-body">
       <!-- Hiển thị hình ảnh từ camera -->
@@ -35,7 +35,7 @@
             console.log(`QR Code scanned: ${decodedText}`);
 
             // Hiển thị thông báo thành công
-            showAlert(`QR Code quét thành công: ${decodedText}`, "success");
+            showAlert("<%= t('events.scan_qr.scan_success') %>".replace("%{decoded_text}", decodedText), "success");
 
             // Gửi chuỗi giải mã đến backend để kiểm tra
             $.ajax({
@@ -53,7 +53,7 @@
                 },
                 error: function (xhr, status, error) {
                     console.error("Error: ", error);
-                    showAlert("Có lỗi xảy ra trong quá trình xử lý.", "danger");
+                    showAlert("<%= t('events.scan_qr.process_error') %>", "danger");
                 }
             });
         }
@@ -62,15 +62,15 @@
         const html5QrCode = new Html5Qrcode("reader");
 
         html5QrCode.start(
-          { facingMode: "environment" }, // Sử dụng camera sau (hoặc "user" cho camera trước)
-          {
-              fps: 1, // Số khung hình mỗi giây
-              qrbox: 600 // Kích thước vùng quét QR
-          },
-          onScanSuccess // Hàm callback khi quét thành công
+            { facingMode: "environment" }, // Sử dụng camera sau (hoặc "user" cho camera trước)
+            {
+                fps: 1, // Số khung hình mỗi giây
+                qrbox: 600 // Kích thước vùng quét QR
+            },
+            onScanSuccess // Hàm callback khi quét thành công
         ).catch((err) => {
             console.error("Không thể khởi động camera: ", err);
-            showAlert("Không thể khởi động camera.", "danger");
+            showAlert("<%= t('events.scan_qr.camera_error') %>", "danger");
         });
     });
 </script>

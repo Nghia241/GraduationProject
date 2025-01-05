@@ -47,7 +47,7 @@ class EventController < ApplicationController
     end
 
     # Nếu mọi thứ thành công
-    redirect_to root_path, notice: "Sự kiện đã được tạo thành công."
+    redirect_to event_index_path, notice: "Sự kiện đã được tạo thành công."
 
   rescue ActiveRecord::RecordInvalid => e
     # Bắt lỗi nếu một trong hai thao tác thất bại
@@ -71,7 +71,7 @@ class EventController < ApplicationController
   def destroy
     @event = Event.find(params[:id])
     @event.destroy
-    redirect_to root_path, notice: "Sự kiện đã được xóa."
+    redirect_to event_index_path, notice: "Sự kiện đã được xóa."
   end
 
   def qrcode

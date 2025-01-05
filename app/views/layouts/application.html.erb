@@ -36,9 +36,14 @@
       <div class="col-md-3">
         <%= render 'partials/sidebar' %>
       </div>
-
       <!-- Nội dung chính -->
       <div class="col-md-9">
+        <% flash.each do |key, message| %>
+          <div class="alert alert-<%= key == 'notice' ? 'success' : 'danger' %> alert-dismissible fade show" role="alert">
+            <%= message %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% end %>
         <%= yield %>
       </div>
     </div>

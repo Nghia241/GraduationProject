@@ -182,9 +182,7 @@ class EventController < ApplicationController
 
   def change_role
     ticket = Ticket.find_by(event_id: params[:id], user_id: params[:user_id])
-
-    if ticket
-      ticket.update(event_role: params[:role])
+    if ticket.update(event_role: params[:role])
       render json: { message: "Cập nhật vai trò thành công!" }, status: :ok
     else
       render json: { message: "Không tìm thấy nhân viên trong sự kiện!" }, status: :not_found

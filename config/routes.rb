@@ -48,7 +48,7 @@ Rails.application.routes.draw do
       get :qrcode
       get :scan_qr # Màn hình quét QR
       post :decode
-      patch :change_employee_role
+      post :change_employee_role
       post :change_role
       get :check_in_status
     end

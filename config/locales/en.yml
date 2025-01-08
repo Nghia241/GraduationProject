@@ -1,4 +1,6 @@
 en:
+  date:
+    order: [ "day", "month", "year" ]
   navbar:
     title: "Internal Event Management System"
     greeting: "Hello"

@@ -119,10 +119,10 @@ class EventController < ApplicationController
       {
         id: user.id,
         name: user.name,
-        has_ticket: Ticket.exists?(event_id: @event.id, user_id: user.id)
+        has_ticket: Ticket.exists?(event_id: @event.id, user_id: user.id),
+        role: Ticket.find_by(event_id: @event.id, user_id: user.id)&.event_role
       }
     end
-
     # Lọc theo trạng thái tham gia sự kiện
     if params[:status] == 'participated'
       @employees.select! { |employee| employee[:has_ticket] }
@@ -172,7 +172,6 @@ class EventController < ApplicationController
   def change_employee_role
     event = Event.find(params[:id])
     ticket = Ticket.find_by(event_id: event.id, user_id: params[:user_id])
-
     if ticket.update(event_role: params[:role])
       render json: { message: "Cập nhật vai trò thành công!" }, status: :ok
     else

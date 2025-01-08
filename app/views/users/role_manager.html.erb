@@ -66,3 +66,44 @@
     <%= paginate @users %>
   </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        // Xử lý sự kiện thay đổi quyền
+        $(document).on("change", ".role-select", function () {
+            const userId = $(this).data("user-id");
+            const roleId = $(this).val();
+            console.log(`URL: /users/${userId}/update_role, role_id: ${roleId}`);
+            $.ajax({
+                url: `/users/${userId}/update_role`,
+                method: "POST",
+                data: { role_id: roleId },
+                success: function (response) {
+                    alert(response.message);
+                },
+                error: function (xhr) {
+                    alert("Không thể cập nhật quyền. Vui lòng thử lại.");
+                },
+            });
+        });
+
+        // Xử lý nút xóa người dùng (bổ sung nếu cần)
+        $(document).on("click", ".delete-user", function () {
+            const userId = $(this).closest("tr").data("user-id");
+            if (confirm("Bạn có chắc chắn muốn xóa người dùng này không?")) {
+                $.ajax({
+                    url: `/users/${userId}`,
+                    method: "DELETE",
+                    success: function (response) {
+                        alert(response.message);
+                        location.reload(); // Tải lại bảng sau khi xóa
+                    },
+                    error: function (xhr) {
+                        alert("Không thể xóa người dùng. Vui lòng thử lại.");
+                    },
+                });
+            }
+        });
+    });
+
+</script>

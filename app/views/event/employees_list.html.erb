@@ -42,7 +42,10 @@
           <td>
             <% if employee[:has_ticket] %>
               <select class="form-select change-role" data-user-id="<%= employee[:id] %>" data-event-id="<%= @event.id %>">
-                <%= options_for_select(Ticket.event_roles.keys.map { |role| [role.humanize, role] }, employee[:role]) %>
+                <%= options_for_select(
+                      Ticket.event_roles.keys.map { |role| [role.humanize, role] }, # Danh sách vai trò
+                      employee[:role] # Vai trò hiện tại từ cơ sở dữ liệu
+                    ) %>
               </select>
             <% else %>
               <span class="badge bg-secondary text-light"><%= t('events.employees.table.undefined') %></span>
@@ -124,7 +127,7 @@
               const newRole = selectElement.val();
 
               $.ajax({
-                  url: `/event/${eventId}/change_role`,
+                  url: `/event/${eventId}/change_employee_role`,
                   method: "POST",
                   data: {
                       user_id: userId,

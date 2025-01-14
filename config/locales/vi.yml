@@ -11,6 +11,22 @@ vi:
     account: "Tài khoản"
     role_management: "Quản lý thẩm quyền"
     logout: "Đăng xuất"
+  devise:
+    sessions:
+      user:
+        signed_in: "Đăng nhập thành công."
+        signed_out: "Đăng xuất thành công."
+    registrations:
+      user:
+        signed_up: "Đăng ký thành công."
+        updated: "Thông tin tài khoản đã được cập nhật."
+        destroyed: "Tài khoản đã được xóa."
+  flash:
+    notice:
+      profile_updated: "Your profile has been updated successfully!"
+      password_updated: "Your password has been updated successfully!"
+    alert:
+      profile_update_failed: "There was an error updating your profile."
   sidebar:
     overview: "Tổng quan"
     event_management: "Quản lý sự kiện"

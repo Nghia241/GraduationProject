@@ -31,7 +31,7 @@ class ProfilesController < ApplicationController
       flash[:notice] = "Cập nhật mật khẩu thành công!"
       redirect_to profile_path
     else
-      flash[:notice] = "Cập nhật mật khẩu thành công!"
+      flash[:alert] = "Có lỗi xảy ra khi cập nhật mật khẩu."
       render :edit_password
     end
   end
@@ -45,6 +45,6 @@ class ProfilesController < ApplicationController
 
   # Strong parameters cho mật khẩu
   def password_params
-    params.permit(:current_password, :password, :password_confirmation)
+    params.require(:user).permit(:current_password, :password, :password_confirmation)
   end
 end

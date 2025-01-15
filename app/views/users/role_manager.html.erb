@@ -1,37 +1,70 @@
-<div class="container mt-4">
-  <h1 class="text-center">Quản lý quyền người dùng</h1>
+<div class="container mt-5">
+  <h1 class="text-center mb-4 text-primary">
+    <i class="fas fa-user-cog me-2"></i><%= t('users.role_manager.title') %>
+  </h1>
 
-  <table class="table table-bordered table-hover">
-    <thead>
-    <tr>
-      <th>Tài khoản</th>
-      <th>Quyền</th>
-      <th>Hành động</th>
-    </tr>
-    </thead>
-    <tbody id="user-table">
-    <% @users.each do |user| %>
-      <tr data-user-id="<%= user.id %>">
-        <td><%= user.email %></td>
-        <td>
-          <select class="form-select role-select" data-user-id="<%= user.id %>">
-            <% @roles.each do |role| %>
-              <option value="<%= role.id %>" <%= "selected" if user.system_role_id == role.id %>>
-                <%= role.role_name.titleize %>
-              </option>
-            <% end %>
-          </select>
-        </td>
-        <td>
-          <button class="btn btn-danger btn-sm delete-user">Xóa</button>
-        </td>
+  <!-- Form tìm kiếm và nút lọc -->
+  <div class="row mb-4 align-items-center">
+    <div class="col-12 col-md-6 mb-3">
+      <%= search_form_for @q, url: role_manager_users_path, method: :get, html: { class: "d-flex align-items-center" } do |f| %>
+        <div class="input-group">
+          <span class="input-group-text bg-light"><i class="fas fa-search"></i></span>
+          <%= f.text_field :name_or_email_cont, class: "form-control", placeholder: t('users.role_manager.search_placeholder') %>
+          <button class="btn btn-secondary">
+            <i class="fas fa-search"></i> <%= t('users.role_manager.search_button') %>
+          </button>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-12 col-md-6 text-md-end">
+      <div class="btn-group">
+        <%= link_to t('users.role_manager.filters.admin'), role_manager_users_path(q: { system_role_role_name_eq: "admin" }), class: "btn btn-primary me-2" %>
+        <%= link_to t('users.role_manager.filters.user'), role_manager_users_path(q: { system_role_role_name_eq: "user" }), class: "btn btn-success me-2" %>
+        <%= link_to t('users.role_manager.filters.all'), role_manager_users_path, class: "btn btn-outline-secondary" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bảng danh sách người dùng -->
+  <div class="table-responsive shadow-sm">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+      <tr>
+        <th><i class="fas fa-user"></i> <%= t('users.role_manager.table.name') %></th>
+        <th><i class="fas fa-envelope"></i> <%= t('users.role_manager.table.email') %></th>
+        <th><i class="fas fa-user-tag"></i> <%= t('users.role_manager.table.role') %></th>
+        <th class="text-center"><i class="fas fa-tools"></i> <%= t('users.role_manager.table.actions') %></th>
       </tr>
-    <% end %>
-    </tbody>
-  </table>
-  <nav>
+      </thead>
+      <tbody>
+      <% @users.each do |user| %>
+        <tr data-user-id="<%= user.id %>">
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td>
+            <select class="form-select role-select" data-user-id="<%= user.id %>">
+              <% @roles.each do |role| %>
+                <option value="<%= role.id %>" <%= "selected" if user.system_role_id == role.id %>>
+                  <%= role.role_name.titleize %>
+                </option>
+              <% end %>
+            </select>
+          </td>
+          <td class="text-center">
+            <button class="btn btn-danger btn-sm delete-user">
+              <i class="fas fa-trash-alt"></i> <%= t('users.role_manager.table.delete_user') %>
+            </button>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Phân trang -->
+  <div class="mt-4">
     <%= paginate @users %>
-  </nav>
+  </div>
 </div>
 
 <script>

@@ -23,3 +23,4 @@ class TicketsController < ApplicationController
     params.require(:ticket).permit(:qr_code_value, :event_role, :event_id)
   end
 end
+S

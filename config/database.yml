@@ -3,5 +3,5 @@ development:
   encoding: utf8mb4
   database: event_management_system
   pool: 5
-  username: chien
+  username: root
   password: password

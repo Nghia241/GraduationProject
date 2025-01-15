@@ -5,20 +5,54 @@ class EventController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @events = Event.page(params[:page]).per(2)
+    @q = Event.ransack(params[:q]) # Tạo một đối tượng tìm kiếm từ Ransack
+    @events = @q.result.page(params[:page]).per(6) # Kết quả tìm kiếm được phân trang
   end
 
   def new
+    render file: Rails.root.join("app", "views", "errors", "forbidden.html") if current_user.system_role_id == 3
     @event = Event.new
   end
 
   def create
-    @event = Event.new(event_params)
-    if @event.save
-      redirect_to root_path, notice: "Sự kiện đã được tạo thành công."
-    else
-      render :new, alert: "Đã xảy ra lỗi."
+    # Kiểm tra quyền truy cập
+    if current_user.system_role_id == 3
+      render file: Rails.root.join("app", "views", "errors", "forbidden.html") and return
     end
+
+    # Khởi tạo đối tượng sự kiện
+    @event = Event.new(event_params)
+
+    # Thực hiện transaction
+    ActiveRecord::Base.transaction do
+      # Lưu sự kiện
+      @event.save!
+
+      # Chuẩn bị dữ liệu cho QR Code
+      raw_data = {
+        event_id: @event.id,
+        user_id: current_user.id
+      }.to_json
+
+      # Mã hóa dữ liệu bằng Base64
+      encoded_data = Base64.strict_encode64(raw_data)
+
+      # Tạo Ticket
+      Ticket.create!(
+        user_id: current_user.id,
+        event_id: @event.id,
+        event_role: 1,
+        qr_code_value: encoded_data
+      )
+    end
+
+    # Nếu mọi thứ thành công
+    redirect_to event_index_path, notice: "Sự kiện đã được tạo thành công."
+
+  rescue ActiveRecord::RecordInvalid => e
+    # Bắt lỗi nếu một trong hai thao tác thất bại
+    flash[:alert] = "Đã xảy ra lỗi: #{e.message}"
+    render :new
   end
 
   def show
@@ -34,26 +68,42 @@ class EventController < ApplicationController
     end
   end
 
-  def delete
+  def destroy
     @event = Event.find(params[:id])
     @event.destroy
-    redirect_to root_path, notice: "Sự kiện đã được xóa."
+    redirect_to event_index_path, notice: "Sự kiện đã được xóa."
   end
 
   def qrcode
     @event = Event.find(params[:id])
+    ticket = @event.tickets.find_by(user_id: current_user.id)
 
-    # Dữ liệu kết hợp: event ID và user ID
-    raw_data = {
-      event_id: @event.id,
-      user_id: current_user.id
-    }.to_json
+    # Nếu vé đã check-in, không cần tạo QR Code
+    if ticket.checked_in
+      @checked_in = true
+    else
+      # Dữ liệu kết hợp: event ID và user ID
+      raw_data = {
+        event_id: @event.id,
+        user_id: current_user.id
+      }.to_json
 
-    # Mã hóa dữ liệu bằng Base64
-    encoded_data = Base64.strict_encode64(raw_data)
+      # Mã hóa dữ liệu bằng Base64
+      encoded_data = Base64.strict_encode64(raw_data)
 
-    # Tạo QR Code từ dữ liệu đã mã hóa
-    @qrcode = RQRCode::QRCode.new(encoded_data)
+      # Tạo QR Code từ dữ liệu đã mã hóa
+      @qrcode = RQRCode::QRCode.new(encoded_data)
+    end
+  end
+
+  def check_in_status
+    @event = Event.find(params[:id])
+    ticket = @event.tickets.find_by(user_id: current_user.id)
+    if ticket.checked_in
+      render json: { checked_in: true }
+    else
+      render json: { checked_in: false }
+    end
   end
 
   def scan_qr
@@ -69,10 +119,10 @@ class EventController < ApplicationController
       {
         id: user.id,
         name: user.name,
-        has_ticket: Ticket.exists?(event_id: @event.id, user_id: user.id)
+        has_ticket: Ticket.exists?(event_id: @event.id, user_id: user.id),
+        role: Ticket.find_by(event_id: @event.id, user_id: user.id)&.event_role
       }
     end
-
     # Lọc theo trạng thái tham gia sự kiện
     if params[:status] == 'participated'
       @employees.select! { |employee| employee[:has_ticket] }
@@ -114,22 +164,33 @@ class EventController < ApplicationController
     end
   end
 
-  # def decode_qrcode
-  #   binding.pry
-  #   # Giải mã Base64
-  #   decoded_data = Base64.decode64(encoded_data)
-  #
-  #   # Parse JSON để lấy thông tin
-  #   parsed_data = JSON.parse(decoded_data)
-  #   event_id = parsed_data["event_id"]
-  #   user_id = parsed_data["user_id"]
-  #
-  #   { event_id: event_id, user_id: user_id }
-  #   binding.pry
-  # end
+  def event_details
+    @q = current_user.events.ransack(params[:q]) # Ransack search object
+    @events = @q.result.page(params[:page]).per(6) # Lọc kết quả và phân trang
+  end
+
+  def change_employee_role
+    event = Event.find(params[:id])
+    ticket = Ticket.find_by(event_id: event.id, user_id: params[:user_id])
+    if ticket.update(event_role: params[:role])
+      render json: { message: "Cập nhật vai trò thành công!" }, status: :ok
+    else
+      render json: { message: "Không thể cập nhật vai trò." }, status: :unprocessable_entity
+    end
+  end
+
+  def change_role
+    ticket = Ticket.find_by(event_id: params[:id], user_id: params[:user_id])
+    if ticket.update(event_role: params[:role])
+      render json: { message: "Cập nhật vai trò thành công!" }, status: :ok
+    else
+      render json: { message: "Không tìm thấy nhân viên trong sự kiện!" }, status: :not_found
+    end
+  end
+
   def decode
     encoded_data = params[:qr_data].to_s
-    event_id = params[:event_id]
+    event_id = params[:id]
 
     begin
       # Giải mã Base64
@@ -137,11 +198,12 @@ class EventController < ApplicationController
 
       # Parse JSON để lấy thông tin
       parsed_data = JSON.parse(decoded_data)
-      event_id_qr = parsed_data["event_id_qr"]
+      event_id_qr = parsed_data["event_id"]
       user_id = parsed_data["user_id"]
 
       # Kiểm tra tính hợp lệ
-      if event_id_qr == event_id && User.find_by(id: user_id).present?
+      if event_id_qr == event_id.to_i && Ticket.find_by(user_id: user_id, event_id:).present?
+        Ticket.find_by(user_id: user_id, event_id:).update(checked_in: true)
         render json: { message: "QR Code hợp lệ!", event_id: event_id_qr, user_id: user_id }, status: :ok
       else
         render json: { message: "QR Code không hợp lệ hoặc không khớp với sự kiện." }, status: :unprocessable_entity
@@ -152,7 +214,7 @@ class EventController < ApplicationController
       render json: { error: "Dữ liệu QR Code không hợp lệ: #{e.message}" }, status: :unprocessable_entity
     rescue StandardError => e
       # Xử lý lỗi khác
-      render json: { error: "Đã xảy ra lỗi trong quá trình xử lý: #{e.message}" }, status: :internal_server_error
+      render json: { error: "QR không đúng vui lòng quét lại: #{e.message}" }, status: :internal_server_error
     end
   end
 

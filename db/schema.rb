@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_04_172845) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_08_194007) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -62,22 +62,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_04_172845) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "ticket_types", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "type_name", null: false
-    t.text "description"
-    t.bigint "event_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["event_id"], name: "index_ticket_types_on_event_id"
-  end
-
   create_table "tickets", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "event_id"
-    t.boolean "event_role", default: false
+    t.integer "event_role", default: 0
     t.string "qr_code_value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "checked_in", default: false, null: false
     t.index ["event_id"], name: "index_tickets_on_event_id"
     t.index ["user_id"], name: "index_tickets_on_user_id"
   end
@@ -100,7 +92,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_04_172845) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "ticket_types", "events"
   add_foreign_key "tickets", "events"
   add_foreign_key "tickets", "users"
   add_foreign_key "users", "system_roles"

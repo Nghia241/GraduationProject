@@ -10,6 +10,16 @@ en:
     account: "Account"
     role_management: "Role Management"
     logout: "Logout"
+  devise:
+    sessions:
+      user:
+        signed_in: "Sign in successfully"
+        signed_out: "Log out successfully"
+    registrations:
+      user:
+        signed_up: "Register successfully"
+        updated: "Account Information updated successfully"
+        destroyed: "The account delete successfully"
   sidebar:
     overview: "Overview"
     event_management: "Event Management"

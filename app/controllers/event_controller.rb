@@ -5,7 +5,7 @@ class EventController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @q = Event.ransack(params[:q]) # Tạo một đối tượng tìm kiếm từ Ransack
+    @q = Event.kept.ransack(params[:q]) # Tạo một đối tượng tìm kiếm từ Ransack
     @events = @q.result.page(params[:page]).per(6) # Kết quả tìm kiếm được phân trang
   end
 
@@ -70,8 +70,20 @@ class EventController < ApplicationController
 
   def destroy
     @event = Event.find(params[:id])
-    @event.destroy
+    @event.discard
     redirect_to event_index_path, notice: "Sự kiện đã được xóa."
+  end
+
+
+  def trash
+    # Chỉ hiển thị các sự kiện đã bị xóa mềm
+    @q = Event.discarded.ransack(params[:q]) # Ransack hỗ trợ tìm kiếm
+    @events = @q.result.page(params[:page]).per(6) # Phân trang kết quả
+  end
+  def restore
+    @event = Event.with_discarded.find(params[:id])
+    @event.undiscard
+    redirect_to trash_event_index_path, notice: "Sự kiện đã được khôi phục."
   end
 
   def qrcode
@@ -111,7 +123,7 @@ class EventController < ApplicationController
   end
 
   def employees_list
-    @event = Event.find(params[:id])
+    @event = Event.kept.find(params[:id])
 
     # Lấy danh sách tất cả nhân viên ngoại trừ bản thân
     @q = User.ransack(params[:q])

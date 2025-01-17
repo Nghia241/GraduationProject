@@ -1,4 +1,5 @@
 class Event < ApplicationRecord
+  include Discard::Model
   has_many :tickets, dependent: :destroy
   has_many :users, through: :tickets
 

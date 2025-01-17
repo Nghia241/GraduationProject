@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   resources :event do
     collection do
       get :event_details
+      get :trash
     end
     member do
       get :employees_list
@@ -51,6 +52,7 @@ Rails.application.routes.draw do
       post :change_employee_role
       post :change_role
       get :check_in_status
+      patch :restore
     end
   end
 

@@ -42,6 +42,16 @@
         <%= t('sidebar.logout') %>
       <% end %>
     </li>
+    <% if current_user.system_role_id == 1 %>
+
+    <li>
+      <%= link_to trash_event_index_path, class: "nav-link #{active_class(trash_event_index_path)} d-flex align-items-center text-white" do %>
+        <i class="bi bi-trash-fill me-2"></i> <!-- Trash icon -->
+        <%= t('sidebar.trash') %>
+      <% end %>
+    </li>
+
+    <% end %>
   </ul>
 </div>
 

@@ -34,6 +34,7 @@ vi:
     account: "Tài khoản"
     role_management: "Quản lý thẩm quyền"
     logout: "Đăng xuất"
+    trash: "Thùng rác"
   home:
     overview_title: "THÔNG SỐ TỔNG QUAN"
     super_admin_count: "Số Super Admin"
@@ -42,6 +43,7 @@ vi:
     event_count: "Số Sự kiện"
     upcoming_events_count: "Sự kiện Sắp tới"
     past_events_count: "Sự kiện Đã xảy ra"
+
   events:
     title: "Danh Sách Toàn Bộ Sự Kiện"
     create_new: "Tạo mới"

@@ -36,22 +36,22 @@
         <% end %>
       </li>
     <% end %>
+    <% if current_user.system_role_id == 1 %>
+
+      <li>
+        <%= link_to trash_event_index_path, class: "nav-link #{active_class(trash_event_index_path)} d-flex align-items-center text-white" do %>
+          <i class="bi bi-trash-fill me-2"></i> <!-- Trash icon -->
+          <%= t('sidebar.trash') %>
+        <% end %>
+      </li>
+
+    <% end %>
     <li>
       <%= link_to destroy_user_session_path, method: :delete, class: 'nav-link d-flex align-items-center text-black' do %>
         <i class="bi bi-box-arrow-right me-2"></i> <!-- Logout icon -->
         <%= t('sidebar.logout') %>
       <% end %>
     </li>
-    <% if current_user.system_role_id == 1 %>
-
-    <li>
-      <%= link_to trash_event_index_path, class: "nav-link #{active_class(trash_event_index_path)} d-flex align-items-center text-white" do %>
-        <i class="bi bi-trash-fill me-2"></i> <!-- Trash icon -->
-        <%= t('sidebar.trash') %>
-      <% end %>
-    </li>
-
-    <% end %>
   </ul>
 </div>
 

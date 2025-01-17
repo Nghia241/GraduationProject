@@ -27,6 +27,7 @@ en:
     account: "Account"
     role_management: "Role Management"
     logout: "Logout"
+    trash: "Trash"
   home:
     overview_title: "OVERVIEW STATISTICS"
     super_admin_count: "Number of Super Admins"

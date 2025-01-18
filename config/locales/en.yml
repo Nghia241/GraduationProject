@@ -1,4 +1,6 @@
 en:
+  common:
+    back: "back"
   date:
     order: [ "day", "month", "year" ]
   navbar:
@@ -28,6 +30,20 @@ en:
     role_management: "Role Management"
     logout: "Logout"
     trash: "Trash"
+  trash:
+    title: "Trash Bin"
+    restore: "Restore"
+    delete: "Delete Permanently"
+    confirm_restore: "Are you sure you want to restore this event?"
+    confirm_delete: "Are you sure you want to permanently delete this event? This action cannot be undone."
+    deleted_permanently: "Event has been permanently deleted."
+    restored: "Event has been successfully restored."
+    no_events: "No deleted events found."
+    search_placeholder: "Search deleted events..."
+    name: "name "
+    start_time: "Start time "
+    end_time: "endt ime"
+    action: "action"
   home:
     overview_title: "OVERVIEW STATISTICS"
     super_admin_count: "Number of Super Admins"

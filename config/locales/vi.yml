@@ -1,4 +1,6 @@
 vi:
+  common:
+    back: "quay lại"
   date:
     month_names: [~, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
     order: [ "day", "month", "year" ]
@@ -35,6 +37,20 @@ vi:
     role_management: "Quản lý thẩm quyền"
     logout: "Đăng xuất"
     trash: "Thùng rác"
+  trash:
+    title: "Thùng rác"
+    restore: "Khôi phục"
+    delete: "Xóa vĩnh viễn"
+    confirm_restore: "Bạn có chắc chắn muốn khôi phục sự kiện này không?"
+    confirm_delete: "Bạn có chắc chắn muốn xóa vĩnh viễn sự kiện này không? Hành động này không thể hoàn tác."
+    deleted_permanently: "Sự kiện đã được xóa vĩnh viễn."
+    restored: "Sự kiện đã được khôi phục thành công."
+    no_events: "Không tìm thấy sự kiện đã xóa."
+    search_placeholder: "Tìm kiếm sự kiện đã xóa..."
+    name: "Tên sự kiện "
+    start_time: "Thời gian bắt đầu"
+    end_time: "Thời gian kết thúc "
+    action: "Hành động"
   home:
     overview_title: "THÔNG SỐ TỔNG QUAN"
     super_admin_count: "Số Super Admin"

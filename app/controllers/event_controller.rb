@@ -86,6 +86,12 @@ class EventController < ApplicationController
     redirect_to trash_event_index_path, notice: "Sự kiện đã được khôi phục."
   end
 
+  def delete
+    @event = Event.with_discarded.find(params[:id]) # Bao gồm cả bản ghi bị xóa mềm
+    @event.destroy
+    redirect_to trash_event_index_path, notice: t('trash.deleted_permanently')
+  end
+
   def qrcode
     @event = Event.find(params[:id])
     ticket = @event.tickets.find_by(user_id: current_user.id)

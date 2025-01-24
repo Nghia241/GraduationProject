@@ -1,33 +1,183 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   "true": "foo"
-#
-# To learn more, please read the Rails Internationalization guide
-# available at https://guides.rubyonrails.org/i18n.html.
-
 en:
-  hello: "Hello world"
+  common:
+    back: "back"
+  date:
+    order: [ "day", "month", "year" ]
+  navbar:
+    title: "Internal Event Management System"
+    greeting: "Hello"
+    overview: "Overview"
+    event_management: "Event Management"
+    personal_event_management: "Personal Event Management"
+    account: "Account"
+    role_management: "Role Management"
+    logout: "Logout"
+  devise:
+    sessions:
+      user:
+        signed_in: "Sign in successfully"
+        signed_out: "Log out successfully"
+    registrations:
+      user:
+        signed_up: "Register successfully"
+        updated: "Account Information updated successfully"
+        destroyed: "The account delete successfully"
+  sidebar:
+    overview: "Overview"
+    event_management: "Event Management"
+    personal_event_management: "Personal Event Management"
+    account: "Account"
+    role_management: "Role Management"
+    logout: "Logout"
+    trash: "Trash"
+  trash:
+    title: "Trash Bin"
+    restore: "Restore"
+    delete: "Delete Permanently"
+    confirm_restore: "Are you sure you want to restore this event?"
+    confirm_delete: "Are you sure you want to permanently delete this event? This action cannot be undone."
+    deleted_permanently: "Event has been permanently deleted."
+    restored: "Event has been successfully restored."
+    no_events: "No deleted events found."
+    search_placeholder: "Search deleted events..."
+    name: "name "
+    start_time: "Start time "
+    end_time: "endt ime"
+    action: "action"
+  home:
+    overview_title: "OVERVIEW STATISTICS"
+    super_admin_count: "Number of Super Admins"
+    admin_count: "Number of Admins"
+    user_count: "Number of Users"
+    event_count: "Number of Events"
+    upcoming_events_count: "Upcoming Events"
+    past_events_count: "Past Events"
+  events:
+    title: "List of All Events"
+    create_new: "Create New"
+    search_placeholder: "Search event name"
+    search_button: "Search"
+    table:
+      number: "#"
+      name: "Event Name"
+      location: "Location"
+      actions: "Actions"
+      details: "Details"
+      delete: "Delete"
+      confirm_delete: "Are you sure you want to delete?"
+    new:
+      title: "Create New Event"
+      image_label: "Event Image (PNG)"
+      image_preview: "Image Preview:"
+      name_label: "Event Name *"
+      start_time_label: "Start Time"
+      end_time_label: "End Time"
+      location_label: "Location"
+      description_label: "Event Description"
+      submit_button: "Submit"
+    show:
+      header_with_edit: "Event Details and Edit"
+      header_without_edit: "Event Details"
+      image_alt: "Event Image"
+      name: "Event Name"
+      location: "Location"
+      start_time: "Start Time"
+      end_time: "End Time"
+      image_label: "Event Image"
+      update_button: "Update Event"
+      back_to_list: "Back to Event List"
+      view_qr_code: "View QR Code"
+      delete_event: "Delete Event"
+      confirm_delete: "Are you sure you want to delete this event?"
+      scan_qr_code: "Scan QR Code"
+      employee_list: "Employee List"
+    details:
+      title: "LIST OF PARTICIPATED EVENTS"
+      create_new: "Create New"
+      search_label: "Event Name"
+      search_placeholder: "Search..."
+      search_button: "Search"
+      table:
+        index: "No."
+        name: "Event Name"
+        location: "Location"
+        actions: "Actions"
+        details: "Details"
+    qrcode:
+      title: "QR Code for Event"
+      ticket_scanned: "Ticket has been scanned"
+      unable_to_generate: "Unable to generate QR Code."
+      back_to_event_details: "Back to Event Details"
+      checking_status: "Checking status..."
+      ticket_confirmed: "Ticket has been confirmed!"
+    scan_qr:
+      title: "Scan QR Code"
+      scan_success: "QR Code scanned successfully: %{decoded_text}"
+      process_error: "An error occurred during the process."
+      camera_error: "Unable to start the camera."
+    employees:
+      title: "Manage Employees Participating in the Event"
+      search_placeholder: "Search by name..."
+      search_button: "Search"
+      filters:
+        all: "All"
+        participated: "Participated"
+        not_participated: "Not Participated"
+      table:
+        index: "#"
+        name: "Full Name"
+        role: "Role"
+        actions: "Actions"
+        undefined: "Undefined"
+        remove_employee: "Remove Employee"
+        add_employee: "Add Employee"
+      alerts:
+        add_success: "Employee added successfully."
+        add_error: "Unable to add employee. Please try again."
+        remove_success: "Employee removed successfully."
+        remove_error: "Unable to remove employee. Please try again."
+        role_update_error: "Unable to update role. Please try again."
+  profiles:
+    show:
+      title: "EDIT PERSONAL INFORMATION"
+      mobile_title: "UPDATE INFORMATION"
+      sidebar:
+        personal_info: "Personal Information"
+        change_password: "Change Password"
+      form:
+        name: "Full Name"
+        email: "Email"
+        language: "Language"
+        language_options:
+          english: "English"
+          vietnamese: "Vietnamese"
+        select_language: "Select Language"
+        submit: "Submit"
+    edit_password:
+      title: "CHANGE PASSWORD"
+      sidebar:
+        personal_info: "Personal Information"
+        change_password: "Change Password"
+      form:
+        current_password: "Current Password"
+        new_password: "New Password"
+        confirm_password: "Confirm Password"
+        submit: "Update Password"
+      alerts:
+        success: "Password has been successfully updated."
+        error: "An error occurred. Please try again."
+  users:
+    role_manager:
+      title: "User Role Management"
+      search_placeholder: "Search by name or email"
+      search_button: "Search"
+      filters:
+        admin: "Filter Admin"
+        user: "Filter User"
+        all: "Show All"
+      table:
+        name: "Name"
+        email: "Email"
+        role: "Role"
+        actions: "Actions"
+        delete_user: "Delete"

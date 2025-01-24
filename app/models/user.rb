@@ -18,8 +18,8 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :qr_code, content_type: ['image/png', 'image/jpg', 'image/jpeg'], size: { less_than: 5.megabytes }
 
-  # Custom methods (if needed)
-  # enum system_role_id: { super_admin: 1, admin: 2, user: 3 }
+  private
+
   def full_role_name
     system_role ? system_role.role_name : "No Role"
   end
@@ -30,6 +30,9 @@ class User < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     %w[id name email created_at updated_at]
+  end
+  def self.ransackable_associations(auth_object = nil)
+    ["system_role"]
   end
 end
 

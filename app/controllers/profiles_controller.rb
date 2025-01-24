@@ -27,7 +27,6 @@ class ProfilesController < ApplicationController
   def update_password
     @user = current_user
     if @user.update_with_password(password_params)
-      bypass_sign_in(@user) # Đăng nhập lại sau khi đổi mật khẩu
       flash[:notice] = "Cập nhật mật khẩu thành công!"
       redirect_to profile_path
     else
@@ -40,11 +39,11 @@ class ProfilesController < ApplicationController
 
   # Strong parameters cho thông tin cá nhân
   def profile_params
-    params.require(:user).permit(:name, :email, :language_id)
+    params.require(:user).permit(:name, :language_id)
   end
 
   # Strong parameters cho mật khẩu
   def password_params
-    params.require(:user).permit(:current_password, :password, :password_confirmation)
+    params.permit(:current_password, :password, :password_confirmation)
   end
 end

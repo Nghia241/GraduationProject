@@ -24,7 +24,7 @@ gem 'activerecord'
 gem 'active_storage_validations'
 
 gem 'dotenv-rails', groups: [:development, :test]
-
+gem 'discard', '~> 1.4'
 gem 'jquery-rails'          # Chỉ giữ lại nếu thực sự cần
 gem 'ransack'
 # Web server
@@ -47,6 +47,7 @@ end
 
 group :development do
   gem "web-console"
+  gem 'letter_opener_web', '~> 2.0'
 end
 
 group :test do

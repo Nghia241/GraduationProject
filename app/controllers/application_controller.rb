@@ -10,11 +10,16 @@
 # end
 class ApplicationController < ActionController::Base
   before_action :set_devise_mapping
+  before_action :set_locale
 
   private
 
   def set_devise_mapping
     request.env['devise.mapping'] = Devise.mappings[:user]
+  end
+
+  def set_locale
+    I18n.locale = current_user&.language&.locale || I18n.default_locale
   end
 end
 

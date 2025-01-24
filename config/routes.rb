@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   # Trang HomePage sau khi đăng nhập
   get 'home/index', to: 'home#index', as: :home_index
 
-  resources :users, only: [:index] do
+  resources :users, only: [:index, :destroy] do
     collection do
       get :role_manager
     end
@@ -30,13 +30,17 @@ Rails.application.routes.draw do
 
   resource :profile, only: [:show, :update] do
     member do
-      get :edit_password     # Màn hình đổi mật khẩu
+      get :edit_password # Màn hình đổi mật khẩu
       patch :update_password # Xử lý cập nhật mật khẩu
     end
   end
 
   # Routes cho sự kiện (Event)
   resources :event do
+    collection do
+      get :event_details
+      get :trash
+    end
     member do
       get :employees_list
       post :add_employee_to_event
@@ -45,12 +49,18 @@ Rails.application.routes.draw do
       get :qrcode
       get :scan_qr # Màn hình quét QR
       post :decode
-      post :test
+      post :change_employee_role
+      post :change_role
+      get :check_in_status
+      patch :restore
+      delete :delete
     end
   end
 
   # Routes cho vé (Ticket)
   resources :tickets, only: [:new, :create]
 
-  # Các routes khác...
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 end

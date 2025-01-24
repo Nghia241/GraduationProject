@@ -1,16 +1,50 @@
 <div class="container mt-5">
-  <h2 class="text-center">Quên mật khẩu</h2>
-  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { class: "form-horizontal" }) do |f| %>
-    <div class="form-group">
-      <%= f.label :email, "Email", class: "control-label" %>
-      <%= f.email_field :email, autofocus: true, class: "form-control" %>
-    </div>
+  <h2 class="text-center text-warning mb-4">
+    <i class="bi bi-unlock-fill me-2"></i>Quên mật khẩu
+  </h2>
+  <div class="card shadow-lg p-4">
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { class: "form-horizontal" }) do |f| %>
+      <div class="form-group mb-3">
+        <label for="email" class="form-label">
+          <i class="bi bi-envelope-fill me-2 text-warning"></i>Email
+        </label>
+        <%= f.email_field :email, autofocus: true, class: "form-control", placeholder: "Nhập email của bạn" %>
+      </div>
 
-    <div class="form-group mt-3">
-      <%= f.submit "Gửi yêu cầu", class: "btn btn-warning btn-block" %>
+      <div class="form-group d-grid gap-2 mt-4">
+        <%= f.submit "Gửi yêu cầu", class: "btn btn-warning btn-lg" %>
+      </div>
+    <% end %>
+
+    <div class="text-center mt-3">
+      <%= link_to "Đã có tài khoản? Đăng nhập", new_user_session_path, class: "text-decoration-none text-warning" %>
     </div>
-  <% end %>
-  <div class="text-center mt-3">
-    <%= link_to "Đã có tài khoản? Đăng nhập", new_user_session_path %>
   </div>
 </div>
+
+<style>
+    .card {
+        border-radius: 15px;
+        background: #f8f9fa; /* Light background for the card */
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+        padding: 12px;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); /* Yellow glow on focus */
+        border-color: #ffc107;
+    }
+
+    .btn-warning {
+        background: linear-gradient(90deg, #ffb300, #ffc107);
+        border: none;
+    }
+
+    .btn-warning:hover {
+        background: linear-gradient(90deg, #ffc107, #ffb300);
+    }
+</style>

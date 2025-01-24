@@ -1,25 +1,41 @@
 <div class="container mt-5">
   <div class="card shadow">
     <div class="card-header bg-primary text-white">
-      <h3 class="text-center">Quét QR Code</h3>
+      <h3 class="text-center"><%= t('events.scan_qr.title') %></h3>
     </div>
     <div class="card-body">
       <!-- Hiển thị hình ảnh từ camera -->
-      <div id="reader" style=" "></div>
-      <p id="decoded-result" class="mt-3 text-center text-success"></p>
+      <div id="reader"></div>
+      <div id="alert-container" class="mt-3"></div>
     </div>
   </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js"></script>
+
 <script>
     $(document).ready(function () {
+        // Hàm hiển thị thông báo
+        function showAlert(message, type) {
+            const alertHtml = `
+        <div class="alert alert-${type} text-center fs-3 fw-bold" role="alert">
+          ${message}
+        </div>
+      `;
+            $('#alert-container').html(alertHtml);
+
+            // Tự động ẩn thông báo sau 4 giây
+            setTimeout(() => {
+                $('#alert-container').fadeOut('slow', function () {
+                    $(this).html('').show(); // Xóa nội dung thông báo sau khi ẩn
+                });
+            }, 4000);
+        }
+
         // Hàm xử lý khi QR Code được quét thành công
         function onScanSuccess(decodedText, decodedResult) {
             console.log(`QR Code scanned: ${decodedText}`);
 
-            // Hiển thị kết quả giải mã trên màn hình
-            $('#decoded-result').text(`QR Code: ${decodedText}`);
+            // Hiển thị thông báo thành công
+            showAlert("<%= t('events.scan_qr.scan_success') %>".replace("%{decoded_text}", decodedText), "success");
 
             // Gửi chuỗi giải mã đến backend để kiểm tra
             $.ajax({
@@ -33,11 +49,11 @@
                     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
-                    $('#decoded-result').text(response.message);
+                    showAlert(response.message, "success");
                 },
                 error: function (xhr, status, error) {
                     console.error("Error: ", error);
-                    $('#decoded-result').text("Có lỗi xảy ra trong quá trình xử lý.");
+                    showAlert("<%= t('events.scan_qr.process_error') %>", "danger");
                 }
             });
         }
@@ -54,7 +70,7 @@
             onScanSuccess // Hàm callback khi quét thành công
         ).catch((err) => {
             console.error("Không thể khởi động camera: ", err);
-            $('#decoded-result').text("Không thể khởi động camera.");
+            showAlert("<%= t('events.scan_qr.camera_error') %>", "danger");
         });
     });
 </script>

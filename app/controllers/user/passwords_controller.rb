@@ -9,6 +9,9 @@ class User::PasswordsController < Devise::PasswordsController
   # POST /user/password
   def create
     super do |resource|
+      if resource.errors.any?
+        Rails.logger.error(resource.errors.full_messages.to_sentence)
+      end
       # Logic tùy chỉnh, ví dụ:
       # Ghi log hoặc thông báo cho admin khi người dùng yêu cầu quên mật khẩu
       Rails.logger.info("Password reset requested for email: #{params[:user][:email]}")

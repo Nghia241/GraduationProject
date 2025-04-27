@@ -26,7 +26,7 @@
     <tr>
       <th>STT</th>
       <th>Họ và tên</th>
-      <th>Trạng thái tham gia</th>
+      <th>Vai trò</th>
       <th>Hành động</th>
     </tr>
     </thead>
@@ -35,10 +35,14 @@
       <tr data-user-id="<%= employee[:id] %>">
         <td><%= (index + 1) + ((@paginated_employees.current_page - 1) * @paginated_employees.limit_value) %></td>
         <td><%= employee[:name] %></td>
-        <td class="status">
-          <span class="badge <%= employee[:has_ticket] ? 'badge-success' : 'badge-secondary' %>">
-            <%= employee[:has_ticket] ? "Đã tham gia" : "Chưa tham gia" %>
-          </span>
+        <td>
+          <% if employee[:has_ticket] %>
+            <select class="form-control change-role" data-user-id="<%= employee[:id] %>" data-event-id="<%= @event.id %>">
+              <%= options_for_select(Ticket.event_roles.keys.map { |role| [role.humanize, role] }, employee[:role]) %>
+            </select>
+          <% else %>
+            <span class="badge badge-secondary text-black">Không xác định</span>
+          <% end %>
         </td>
         <td>
           <% if employee[:has_ticket] %>
@@ -113,6 +117,34 @@
             });
         });
 
+        $(document).on("change", ".change-role", function () {
+            const selectElement = $(this);
+            const userId = selectElement.data("user-id"); // Lấy user ID từ data attribute
+            const eventId = selectElement.data("event-id"); // Lấy event ID từ data attribute
+            const newRole = selectElement.val(); // Lấy giá trị vai trò mới được chọn
+
+            // Kiểm tra console để đảm bảo dữ liệu chính xác
+            console.log("Thay đổi vai trò:", { userId, eventId, newRole });
+
+            // Gửi yêu cầu AJAX đến server
+            $.ajax({
+                url: `/event/${eventId}/change_role`, // Đường dẫn đến API change_role
+                method: "POST", // Phương thức POST
+                data: {
+                    user_id: userId,
+                    role: newRole,
+                },
+                success: function (response) {
+                    // Hiển thị thông báo thành công
+                    alert(response.message);
+                },
+                error: function (xhr) {
+                    // Hiển thị lỗi nếu có
+                    alert("Không thể cập nhật vai trò. Vui lòng thử lại.");
+                    console.error(xhr.responseText); // Ghi log lỗi ra console
+                },
+            });
+        });
     });
 
 </script>

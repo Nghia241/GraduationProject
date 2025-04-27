@@ -40,7 +40,7 @@ class ProfilesController < ApplicationController
 
   # Strong parameters cho thông tin cá nhân
   def profile_params
-    params.require(:user).permit(:name, :email, :language_id)
+    params.require(:user).permit(:name, :language_id)
   end
 
   # Strong parameters cho mật khẩu
